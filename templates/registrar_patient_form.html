@@ -1,0 +1,44 @@
+{{define "registrar_patient_form.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>{{.Title}}</h1>
+    <div class="panel">
+      {{if .Patient.ID}}
+      <form method="post" action="/registrar/patients/{{.Patient.ID}}">
+      {{else}}
+      <form method="post" action="/registrar/patients">
+      {{end}}
+        <div class="form-grid">
+          <div><label>Номер карты *</label><input name="card_number" required value="{{index .Form "card_number"}}"></div>
+          <div><label>ФИО *</label><input name="full_name" required value="{{index .Form "full_name"}}"></div>
+          <div><label>Дата рождения *</label><input type="date" name="birth_date" required value="{{index .Form "birth_date"}}"></div>
+          <div><label>Тип полиса *</label>
+            <select name="insurance_type">
+              <option value="OMS" {{if eq (index .Form "insurance_type") "OMS"}}selected{{end}}>OMS</option>
+              <option value="DMS" {{if eq (index .Form "insurance_type") "DMS"}}selected{{end}}>DMS</option>
+            </select>
+          </div>
+          <div><label>Номер полиса *</label><input name="insurance_number" required value="{{index .Form "insurance_number"}}"></div>
+          <div><label>Паспорт *</label><input name="passport_data" required value="{{index .Form "passport_data"}}"></div>
+          <div><label>Адрес</label><input name="address" value="{{index .Form "address"}}"></div>
+          <div><label>Контакты</label><input name="contacts" value="{{index .Form "contacts"}}"></div>
+        </div>
+        <button type="submit">Сохранить</button>
+        <a class="btn secondary" href="/registrar/patients">Отмена</a>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

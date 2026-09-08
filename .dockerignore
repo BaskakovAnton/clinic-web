@@ -1,0 +1,12 @@
+.git
+.env
+*.exe
+clinic
+clinic.exe
+*.log
+.idea
+.vscode
+original
+etalon_bd/*.dump
+**/.DS_Store
+agent-tools

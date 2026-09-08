@@ -1,0 +1,31 @@
+{{define "nav"}}
+<header class="site-header">
+  <a class="brand" href="/">Клиника</a>
+  <nav class="nav">
+    {{if eq .Session.Role "admin"}}
+      <a href="/admin" {{if eq .Active "admin"}}class="is-active"{{end}}>Дашборд</a>
+      <a href="/admin/staff" {{if eq .Active "staff"}}class="is-active"{{end}}>Персонал</a>
+      <a href="/admin/mass-slots" {{if eq .Active "mass"}}class="is-active"{{end}}>Слоты</a>
+      <a href="/admin/roles" {{if eq .Active "roles"}}class="is-active"{{end}}>Роли</a>
+    {{end}}
+    {{if or (eq .Session.Role "registrar") (eq .Session.Role "admin")}}
+      <a href="/registrar/patients" {{if eq .Active "patients"}}class="is-active"{{end}}>Пациенты</a>
+      <a href="/registrar/schedule" {{if eq .Active "schedule"}}class="is-active"{{end}}>Расписание</a>
+      <a href="/registrar/slots" {{if eq .Active "slots"}}class="is-active"{{end}}>Свободные</a>
+    {{end}}
+    {{if or (eq .Session.Role "doctor") (eq .Session.Role "admin")}}
+      <a href="/doctor/day" {{if eq .Active "day"}}class="is-active"{{end}}>Мой день</a>
+      <a href="/doctor/patients" {{if eq .Active "doc_patients"}}class="is-active"{{end}}>Карты</a>
+      <a href="/doctor/schedule" {{if eq .Active "doc_schedule"}}class="is-active"{{end}}>Моё расп.</a>
+      <a href="/reports/workload" {{if eq .Active "workload"}}class="is-active"{{end}}>Нагрузка</a>
+      <a href="/reports/preferential" {{if eq .Active "preferential"}}class="is-active"{{end}}>Льготы</a>
+    {{end}}
+  </nav>
+  <div class="user-meta">
+    {{.Session.Login}} · {{roleLabel (printf "%s" .Session.Role)}}
+    <form action="/logout" method="post" style="display:inline;margin-left:.5rem">
+      <button type="submit" class="secondary" style="margin:0;padding:.3rem .7rem;font-size:.85rem">Выйти</button>
+    </form>
+  </div>
+</header>
+{{end}}

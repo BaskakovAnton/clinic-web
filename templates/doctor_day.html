@@ -1,0 +1,55 @@
+{{define "doctor_day.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>Мой день</h1>
+    <form class="toolbar" method="get" action="/doctor/day">
+      <div class="field"><label>Дата</label><input type="date" name="date" value="{{.Date}}"></div>
+      <div class="field">
+        <label>Работаю как</label>
+        <select name="doctor_id">
+          {{range .Doctors}}
+          <option value="{{.ID}}" {{if eq $.DoctorID .ID}}selected{{end}}>{{.FullName}}</option>
+          {{end}}
+        </select>
+      </div>
+      <button type="submit" class="secondary">Показать</button>
+    </form>
+    <div class="panel">
+      {{if not .Appointments}}<p class="empty">На день записей нет</p>{{else}}
+      <table>
+        <thead><tr><th>Время</th><th>Статус</th><th>Пациент</th><th></th></tr></thead>
+        <tbody>
+          {{range .Appointments}}
+          <tr>
+            <td>{{.StartAt.Format "15:04"}}</td>
+            <td>{{.Status}}{{if .HasVisit}} · визит оформлен{{end}}</td>
+            <td>{{if .PatientName.Valid}}{{.PatientName.String}}{{else}}—{{end}}</td>
+            <td>
+              {{if and (eq .Status "booked") .PatientID.Valid (not .HasVisit)}}
+              <a class="btn" href="/doctor/patients/{{.PatientID.Int64}}?appointment_id={{.ID}}">Начать приём</a>
+              {{else if and .HasVisit .PatientID.Valid}}
+              <a href="/doctor/patients/{{.PatientID.Int64}}">Карта</a>
+              {{end}}
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{end}}
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

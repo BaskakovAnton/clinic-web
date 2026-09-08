@@ -1,0 +1,44 @@
+{{define "reports_preferential.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    <h1>Льготные назначения</h1>
+    <p class="muted">Данные из v_preferential_orders</p>
+    <div class="panel">
+      {{if not .Preferential}}
+        <p class="empty">Нет льготных назначений</p>
+      {{else}}
+      <table>
+        <thead>
+          <tr><th>Дата</th><th>Пациент</th><th>Врач</th><th>Тип</th><th>Описание</th><th>Рецепт</th></tr>
+        </thead>
+        <tbody>
+          {{range .Preferential}}
+          <tr>
+            <td>{{.VisitAt.Format "02.01.2006 15:04"}}</td>
+            <td>{{.PatientName}} ({{.CardNumber}})</td>
+            <td>{{.DoctorName}}</td>
+            <td>{{.OrderKind}}</td>
+            <td>{{.Description}}</td>
+            <td>{{if .IsPrescription}}да{{else}}нет{{end}}</td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{end}}
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

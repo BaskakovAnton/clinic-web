@@ -1,0 +1,30 @@
+{{define "login.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход · Клиника</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1>Клиника</h1>
+      <p class="hint">Учебные логины: u_admin / u_registrar / u_doctor</p>
+      {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+      <form method="post" action="/login">
+        <label for="login">Логин</label>
+        <input id="login" name="login" required autocomplete="username" placeholder="u_registrar">
+        <label for="password">Пароль</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password">
+        <button type="submit">Войти</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+{{end}}

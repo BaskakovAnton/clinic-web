@@ -1,0 +1,72 @@
+{{define "registrar_patient.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>{{.Patient.FullName}}</h1>
+    <p class="muted">Карта {{.Patient.CardNumber}} · {{.Patient.InsuranceType}} {{.Patient.InsuranceNumber}}</p>
+    <div class="panel">
+      <p>Дата рождения: {{.Patient.BirthDate.Format "02.01.2006"}}</p>
+      <p>Паспорт: {{.Patient.PassportData}}</p>
+      <p>Адрес: {{if .Patient.Address.Valid}}{{.Patient.Address.String}}{{else}}—{{end}}</p>
+      <p>Контакты: {{if .Patient.Contacts.Valid}}{{.Patient.Contacts.String}}{{else}}—{{end}}</p>
+      <a class="btn secondary" href="/registrar/patients/{{.Patient.ID}}/edit">Редактировать</a>
+      {{if or (eq .Session.Role "doctor") (eq .Session.Role "admin")}}
+        <a class="btn" href="/doctor/patients/{{.Patient.ID}}">Мед. карта</a>
+      {{end}}
+    </div>
+    <h2>Записи на приём</h2>
+    <div class="panel">
+      {{if not .Appointments}}<p class="empty">Нет записей</p>{{else}}
+      <table>
+        <thead><tr><th>Когда</th><th>Врач</th><th>Статус</th><th></th></tr></thead>
+        <tbody>
+          {{range .Appointments}}
+          <tr>
+            <td>{{.StartAt.Format "02.01.2006 15:04"}}</td>
+            <td>{{.DoctorName}}</td>
+            <td>{{.Status}}{{if .HasVisit}} · визит{{end}}</td>
+            <td>
+              {{if and (eq .Status "booked") (not .HasVisit)}}
+              <form method="post" action="/registrar/slots/{{.ID}}/cancel" style="display:inline">
+                <input type="hidden" name="return" value="/registrar/patients/{{$.Patient.ID}}">
+                <button type="submit" class="secondary">Отменить</button>
+              </form>
+              {{end}}
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{end}}
+    </div>
+    <h2>Записать на свободный слот</h2>
+    <div class="panel">
+      {{if not .Slots}}<p class="empty">Нет свободных слотов</p>{{else}}
+      <form method="post" class="inline-form" action="">
+        <select id="slotPick" onchange="this.form.action='/registrar/slots/'+this.value+'/book'">
+          <option value="">Слот…</option>
+          {{range .Slots}}
+          <option value="{{.AppointmentID}}">{{.StartAt.Format "02.01.2006 15:04"}} — {{.DoctorName}} ({{.Specialty}})</option>
+          {{end}}
+        </select>
+        <input type="hidden" name="patient_id" value="{{.Patient.ID}}">
+        <input type="hidden" name="return" value="/registrar/patients/{{.Patient.ID}}">
+        <button type="submit" onclick="if(!document.getElementById('slotPick').value){alert('Выберите слот');return false}">Записать</button>
+      </form>
+      {{end}}
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

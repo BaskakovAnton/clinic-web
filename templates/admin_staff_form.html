@@ -1,0 +1,43 @@
+{{define "admin_staff_form.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>{{.Title}}</h1>
+    <div class="panel">
+      {{if .Staff.ID}}
+      <form method="post" action="/admin/staff/{{.Staff.ID}}">
+      {{else}}
+      <form method="post" action="/admin/staff">
+      {{end}}
+        <div class="form-grid">
+          <div><label>ФИО *</label><input name="full_name" required value="{{index .Form "full_name"}}"></div>
+          <div>
+            <label>Тип *</label>
+            <select name="staff_kind">
+              <option value="doctor" {{if eq (index .Form "staff_kind") "doctor"}}selected{{end}}>doctor</option>
+              <option value="nurse" {{if eq (index .Form "staff_kind") "nurse"}}selected{{end}}>nurse</option>
+            </select>
+          </div>
+          <div><label>Специальность (врач)</label><input name="specialty" value="{{index .Form "specialty"}}"></div>
+          <div><label>Отделение *</label><input name="department" required value="{{index .Form "department"}}"></div>
+          <div><label>График</label><input name="work_schedule" value="{{index .Form "work_schedule"}}"></div>
+          <div><label>Кабинет</label><input name="office" value="{{index .Form "office"}}"></div>
+        </div>
+        <button type="submit">Сохранить</button>
+        <a class="btn secondary" href="/admin/staff">Отмена</a>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

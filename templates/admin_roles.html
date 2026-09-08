@@ -1,0 +1,38 @@
+{{define "admin_roles.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    <h1>Роли доступа (зеркало 03_roles.sql)</h1>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Роль</th><th>Логин</th><th>Что можно</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>clinic_admin</td><td>u_admin</td>
+            <td>Полный доступ к таблицам/последовательностям; персонал; массовые слоты; все экраны морды</td>
+          </tr>
+          <tr>
+            <td>clinic_registrar</td><td>u_registrar</td>
+            <td>patients R/W; appointments R/W; staff SELECT; VIEW свободных слотов и нагрузки</td>
+          </tr>
+          <tr>
+            <td>clinic_doctor</td><td>u_doctor</td>
+            <td>patients/staff/appointments SELECT; visits и visit_orders R/W; все 4 VIEW</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted">В морде пул БД — широкий пользователь; проверка роли в сессии. На защите дополнительно показать GRANT в pgAdmin под u_*.</p>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

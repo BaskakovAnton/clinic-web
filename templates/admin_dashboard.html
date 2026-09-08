@@ -1,0 +1,29 @@
+{{define "admin_dashboard.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    <h1>Дашборд</h1>
+    <div class="stats">
+      <div class="stat"><div class="stat-value">{{.Stats.Patients}}</div><div class="stat-label">Пациенты</div></div>
+      <div class="stat"><div class="stat-value">{{.Stats.StaffDoctors}}</div><div class="stat-label">Врачи</div></div>
+      <div class="stat"><div class="stat-value">{{.Stats.StaffNurses}}</div><div class="stat-label">Медсёстры</div></div>
+      <div class="stat"><div class="stat-value">{{.Stats.SlotsFree}}</div><div class="stat-label">Свободные слоты</div></div>
+      <div class="stat"><div class="stat-value">{{.Stats.SlotsBooked}}</div><div class="stat-label">Занятые слоты</div></div>
+      <div class="stat"><div class="stat-value">{{.Stats.Visits}}</div><div class="stat-label">Визиты</div></div>
+      <div class="stat"><div class="stat-value">{{.Stats.Preferential}}</div><div class="stat-label">Льготные назн.</div></div>
+    </div>
+    <p class="muted">Быстрые ссылки: <a href="/registrar/patients">пациенты</a> · <a href="/registrar/schedule?date=2026-09-10">расписание 10.09</a> · <a href="/doctor/day?date=2026-09-10">день врача</a></p>
+  </main>
+</body>
+</html>
+{{end}}

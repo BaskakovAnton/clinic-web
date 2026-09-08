@@ -1,0 +1,78 @@
+{{define "registrar_schedule.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>Расписание дня</h1>
+    <form class="toolbar" method="get" action="/registrar/schedule">
+      <div class="field"><label>Дата</label><input type="date" name="date" value="{{.Date}}"></div>
+      <div class="field">
+        <label>Врач</label>
+        <select name="doctor_id">
+          <option value="0">Все</option>
+          {{range .Doctors}}
+          <option value="{{.ID}}" {{if eq $.DoctorID .ID}}selected{{end}}>{{.FullName}}</option>
+          {{end}}
+        </select>
+      </div>
+      <button type="submit" class="secondary">Показать</button>
+    </form>
+    <div class="panel">
+      {{if not .Appointments}}<p class="empty">На эту дату слотов нет</p>{{else}}
+      <table>
+        <thead><tr><th>Время</th><th>Врач</th><th>Статус</th><th>Пациент</th><th>Действия</th></tr></thead>
+        <tbody>
+          {{range .Appointments}}
+          <tr>
+            <td>{{.StartAt.Format "15:04"}}</td>
+            <td>{{.DoctorName}}</td>
+            <td>{{.Status}}{{if .HasVisit}} · визит{{end}}</td>
+            <td>{{if .PatientName.Valid}}{{.PatientName.String}} ({{.PatientCard.String}}){{else}}—{{end}}</td>
+            <td>
+              {{if eq .Status "free"}}
+              <form class="inline-form" method="post" action="/registrar/slots/{{.ID}}/book">
+                <input type="hidden" name="return" value="/registrar/schedule?date={{$.Date}}&doctor_id={{$.DoctorID}}">
+                <select name="patient_id" required>
+                  <option value="">Пациент…</option>
+                  {{range $.Patients}}<option value="{{.ID}}">{{.FullName}}</option>{{end}}
+                </select>
+                <button type="submit">Записать</button>
+              </form>
+              {{else if and (eq .Status "booked") (not .HasVisit)}}
+              <form method="post" action="/registrar/slots/{{.ID}}/cancel" style="display:inline">
+                <input type="hidden" name="return" value="/registrar/schedule?date={{$.Date}}&doctor_id={{$.DoctorID}}">
+                <button type="submit" class="secondary">Отменить</button>
+              </form>
+              <form class="inline-form" method="post" action="/registrar/slots/{{.ID}}/reschedule" style="margin-top:.35rem">
+                <input type="hidden" name="return" value="/registrar/schedule?date={{$.Date}}&doctor_id={{$.DoctorID}}">
+                <input type="hidden" name="patient_id" value="{{if .PatientID.Valid}}{{.PatientID.Int64}}{{end}}">
+                <select name="to_id" required>
+                  <option value="">Перенести на…</option>
+                  {{range $.Slots}}
+                  <option value="{{.AppointmentID}}">{{.StartAt.Format "02.01 15:04"}} {{.DoctorName}}</option>
+                  {{end}}
+                </select>
+                <button type="submit">Перенос</button>
+              </form>
+              {{end}}
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{end}}
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

@@ -1,0 +1,37 @@
+{{define "admin_mass_slots.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>Массовое создание слотов (Пн–Пт)</h1>
+    <div class="panel">
+      <form method="post" action="/admin/mass-slots">
+        <div class="form-grid">
+          <div><label>Понедельник недели</label><input type="date" name="week_start" required value="{{index .Form "week_start"}}"></div>
+          <div><label>С часа</label><input type="number" name="day_start" min="0" max="23" value="{{index .Form "day_start"}}"></div>
+          <div><label>До часа</label><input type="number" name="day_end" min="1" max="24" value="{{index .Form "day_end"}}"></div>
+          <div><label>Шаг (мин)</label><input type="number" name="step_min" value="{{index .Form "step_min"}}"></div>
+        </div>
+        <label>Врачи</label>
+        <div class="checkbox-row" style="flex-wrap:wrap">
+          {{range .Doctors}}
+          <label><input type="checkbox" name="doctor_ids" value="{{.ID}}" checked> {{.FullName}}</label>
+          {{end}}
+        </div>
+        <button type="submit">Создать на неделю</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

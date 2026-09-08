@@ -1,0 +1,42 @@
+{{define "admin_staff.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>Персонал</h1>
+    <p><a class="btn" href="/admin/staff/new">Добавить</a></p>
+    <div class="panel">
+      <table>
+        <thead><tr><th>ID</th><th>ФИО</th><th>Тип</th><th>Спец.</th><th>Отделение</th><th>Каб.</th><th></th></tr></thead>
+        <tbody>
+          {{range .StaffList}}
+          <tr>
+            <td>{{.ID}}</td><td>{{.FullName}}</td><td>{{.StaffKind}}</td>
+            <td>{{if .Specialty.Valid}}{{.Specialty.String}}{{else}}—{{end}}</td>
+            <td>{{.Department}}</td>
+            <td>{{if .Office.Valid}}{{.Office.String}}{{else}}—{{end}}</td>
+            <td>
+              <a href="/admin/staff/{{.ID}}/edit">править</a>
+              <form method="post" action="/admin/staff/{{.ID}}/delete" style="display:inline" onsubmit="return confirm('Удалить? Может упасть на FK.')">
+                <button type="submit" class="secondary" style="margin-left:.5rem">удалить</button>
+              </form>
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

@@ -1,0 +1,77 @@
+{{define "registrar_slots.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>Свободные слоты</h1>
+    <form class="toolbar" method="get" action="/registrar/slots">
+      <div class="field">
+        <label>Специальность</label>
+        <select name="specialty">
+          <option value="">Все</option>
+          {{range .Specialties}}
+          <option value="{{.}}" {{if eq $.Specialty .}}selected{{end}}>{{.}}</option>
+          {{end}}
+        </select>
+      </div>
+      <button type="submit" class="secondary">Показать</button>
+    </form>
+    <div class="panel">
+      <h2 style="margin-top:0">Создать слоты пачкой</h2>
+      <form method="post" action="/registrar/slots/batch" class="form-grid">
+        <input type="hidden" name="return" value="/registrar/slots">
+        <div>
+          <label>Врач</label>
+          <select name="doctor_id" required>
+            {{range .Doctors}}<option value="{{.ID}}">{{.FullName}}</option>{{end}}
+          </select>
+        </div>
+        <div><label>Начало</label><input type="datetime-local" name="start_at" required></div>
+        <div><label>Количество</label><input type="number" name="count" value="4" min="1" max="48"></div>
+        <div><label>Шаг (мин)</label><input type="number" name="step_min" value="30" min="5"></div>
+        <div><button type="submit">Создать</button></div>
+      </form>
+    </div>
+    <div class="panel" style="margin-top:1rem">
+      {{if not .Slots}}<p class="empty">Свободных слотов нет</p>{{else}}
+      <table>
+        <thead><tr><th>Когда</th><th>Врач</th><th>Специальность</th><th>Кабинет</th><th>Запись</th></tr></thead>
+        <tbody>
+          {{range .Slots}}
+          <tr>
+            <td>{{.StartAt.Format "02.01.2006 15:04"}}</td>
+            <td>{{.DoctorName}}</td>
+            <td>{{.Specialty}}</td>
+            <td>{{if .Office.Valid}}{{.Office.String}}{{else}}—{{end}}</td>
+            <td>
+              <form class="inline-form" method="post" action="/registrar/slots/{{.AppointmentID}}/book">
+                <input type="hidden" name="return" value="/registrar/slots">
+                <select name="patient_id" required>
+                  <option value="">Пациент…</option>
+                  {{range $.Patients}}
+                  <option value="{{.ID}}">{{.FullName}} ({{.CardNumber}})</option>
+                  {{end}}
+                </select>
+                <button type="submit">Записать</button>
+              </form>
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{end}}
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

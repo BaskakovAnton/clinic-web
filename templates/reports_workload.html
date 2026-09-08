@@ -1,0 +1,34 @@
+{{define "reports_workload.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    <h1>Нагрузка врачей</h1>
+    <p class="muted">v_doctor_workload</p>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Врач</th><th>Специальность</th><th>Отделение</th><th>Визитов</th></tr></thead>
+        <tbody>
+          {{range .Workload}}
+          <tr>
+            <td>{{.DoctorName}}</td>
+            <td>{{if .Specialty.Valid}}{{.Specialty.String}}{{else}}—{{end}}</td>
+            <td>{{.Department}}</td>
+            <td>{{.PatientsSeen}}</td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

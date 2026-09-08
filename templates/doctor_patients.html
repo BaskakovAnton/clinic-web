@@ -1,0 +1,39 @@
+{{define "doctor_patients.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    <h1>Пациенты</h1>
+    <form class="toolbar" method="get" action="/doctor/patients">
+      <div class="field" style="flex:1;min-width:220px">
+        <label>Поиск</label>
+        <input name="q" value="{{.Query}}" placeholder="карта, ФИО, полис">
+      </div>
+      <button type="submit" class="secondary">Найти</button>
+    </form>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Карта</th><th>ФИО</th><th>Полис</th><th></th></tr></thead>
+        <tbody>
+          {{range .Patients}}
+          <tr>
+            <td>{{.CardNumber}}</td><td>{{.FullName}}</td>
+            <td>{{.InsuranceType}} {{.InsuranceNumber}}</td>
+            <td><a href="/doctor/patients/{{.ID}}">Открыть карту</a></td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

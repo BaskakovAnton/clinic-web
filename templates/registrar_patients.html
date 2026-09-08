@@ -1,0 +1,45 @@
+{{define "registrar_patients.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>Пациенты</h1>
+    <form class="toolbar" method="get" action="/registrar/patients">
+      <div class="field" style="flex:1;min-width:220px">
+        <label for="q">Поиск</label>
+        <input id="q" name="q" value="{{.Query}}" placeholder="карта, ФИО, полис, телефон">
+      </div>
+      <button type="submit" class="secondary">Найти</button>
+      <a class="btn" href="/registrar/patients/new">Новый пациент</a>
+    </form>
+    <div class="panel">
+      {{if not .Patients}}<p class="empty">Ничего не найдено</p>{{else}}
+      <table>
+        <thead><tr><th>ID</th><th>Карта</th><th>ФИО</th><th>Полис</th><th>Контакты</th><th></th></tr></thead>
+        <tbody>
+          {{range .Patients}}
+          <tr>
+            <td>{{.ID}}</td><td>{{.CardNumber}}</td><td>{{.FullName}}</td>
+            <td>{{.InsuranceType}} {{.InsuranceNumber}}</td>
+            <td>{{if .Contacts.Valid}}{{.Contacts.String}}{{else}}—{{end}}</td>
+            <td><a href="/registrar/patients/{{.ID}}">Карточка</a></td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{end}}
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

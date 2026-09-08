@@ -1,0 +1,82 @@
+{{define "doctor_patient.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>{{.Patient.FullName}}</h1>
+    <p class="muted">Карта {{.Patient.CardNumber}} · {{.Patient.InsuranceType}} {{.Patient.InsuranceNumber}} · {{.Patient.BirthDate.Format "02.01.2006"}}</p>
+
+    <h2>История (v_patient_medical_card)</h2>
+    <div class="panel">
+      {{if not .CardRows}}<p class="empty">Записей пока нет</p>{{else}}
+      <table>
+        <thead><tr><th>Визит</th><th>Врач</th><th>Жалобы</th><th>МКБ-10</th><th>Назначение</th><th></th></tr></thead>
+        <tbody>
+          {{range .CardRows}}
+          <tr>
+            <td>{{if .VisitAt.Valid}}{{.VisitAt.Time.Format "02.01.2006 15:04"}}{{else}}—{{end}}</td>
+            <td>{{if .DoctorName.Valid}}{{.DoctorName.String}}{{else}}—{{end}}</td>
+            <td>{{if .Complaints.Valid}}{{.Complaints.String}}{{else}}—{{end}}</td>
+            <td>{{if .DiagnosisICD10.Valid}}{{.DiagnosisICD10.String}}{{else}}—{{end}}</td>
+            <td>
+              {{if .OrderID.Valid}}{{.OrderKind.String}}: {{.OrderDescription.String}}{{if and .IsPreferential.Valid .IsPreferential.Bool}} · льгота{{end}}{{else}}—{{end}}
+            </td>
+            <td>{{if .VisitID.Valid}}<a href="/doctor/visits/{{.VisitID.Int64}}">визит</a>{{end}}</td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+      {{end}}
+    </div>
+
+    <h2>Новый визит</h2>
+    <div class="panel">
+      <form method="post" action="/doctor/patients/{{.Patient.ID}}/visits">
+        <div class="form-grid">
+          <div>
+            <label>Врач</label>
+            <select name="doctor_id" required>
+              {{range .Doctors}}
+              <option value="{{.ID}}" {{if eq (index $.Form "doctor_id") (printf "%d" .ID)}}selected{{end}}>{{.FullName}}</option>
+              {{end}}
+            </select>
+          </div>
+          <div><label>МКБ-10</label><input name="diagnosis_icd10" required placeholder="G44.2"></div>
+          <div><label>appointment_id</label><input name="appointment_id" value="{{index .Form "appointment_id"}}"></div>
+        </div>
+        <label>Жалобы</label>
+        <textarea name="complaints"></textarea>
+        <h2 style="margin-top:1rem">Назначение (опц.)</h2>
+        <div class="form-grid">
+          <div>
+            <label>Тип</label>
+            <select name="order_kind">
+              <option value="">—</option>
+              <option value="medication">medication</option>
+              <option value="procedure">procedure</option>
+              <option value="test">test</option>
+            </select>
+          </div>
+          <div><label>Описание</label><input name="order_description"></div>
+        </div>
+        <div class="checkbox-row">
+          <label><input type="checkbox" name="is_prescription"> рецепт</label>
+          <label><input type="checkbox" name="is_preferential"> льгота</label>
+        </div>
+        <button type="submit">Сохранить визит</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

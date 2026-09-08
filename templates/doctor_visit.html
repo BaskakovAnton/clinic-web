@@ -1,0 +1,78 @@
+{{define "doctor_visit.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <h1>Визит #{{.Visit.ID}}</h1>
+    <p class="muted">{{.Visit.PatientName}} · {{.Visit.DoctorName}} · {{.Visit.VisitAt.Format "02.01.2006 15:04"}}</p>
+    <p><a href="/doctor/patients/{{.Visit.PatientID}}">← к карте пациента</a></p>
+
+    <div class="panel">
+      <form method="post" action="/doctor/visits/{{.Visit.ID}}">
+        <label>Жалобы</label>
+        <textarea name="complaints">{{if .Visit.Complaints.Valid}}{{.Visit.Complaints.String}}{{end}}</textarea>
+        <label>МКБ-10</label>
+        <input name="diagnosis_icd10" required value="{{.Visit.DiagnosisICD10}}">
+        <button type="submit">Обновить визит</button>
+      </form>
+    </div>
+
+    <h2>Назначения</h2>
+    <div class="panel">
+      {{range .Orders}}
+      <form method="post" action="/doctor/visits/{{$.Visit.ID}}/orders/{{.ID}}" style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--line)">
+        <div class="form-grid">
+          <div>
+            <label>Тип</label>
+            <select name="order_kind">
+              <option value="medication" {{if eq .OrderKind "medication"}}selected{{end}}>medication</option>
+              <option value="procedure" {{if eq .OrderKind "procedure"}}selected{{end}}>procedure</option>
+              <option value="test" {{if eq .OrderKind "test"}}selected{{end}}>test</option>
+            </select>
+          </div>
+          <div><label>Описание</label><input name="order_description" value="{{.Description}}"></div>
+        </div>
+        <div class="checkbox-row">
+          <label><input type="checkbox" name="is_prescription" {{if .IsPrescription}}checked{{end}}> рецепт</label>
+          <label><input type="checkbox" name="is_preferential" {{if .IsPreferential}}checked{{end}}> льгота</label>
+        </div>
+        <button type="submit" class="secondary">Сохранить назначение</button>
+      </form>
+      {{else}}
+      <p class="empty">Пока нет назначений</p>
+      {{end}}
+
+      <h2>Добавить назначение</h2>
+      <form method="post" action="/doctor/visits/{{.Visit.ID}}/orders">
+        <div class="form-grid">
+          <div>
+            <label>Тип</label>
+            <select name="order_kind" required>
+              <option value="medication">medication</option>
+              <option value="procedure">procedure</option>
+              <option value="test">test</option>
+            </select>
+          </div>
+          <div><label>Описание</label><input name="order_description" required></div>
+        </div>
+        <div class="checkbox-row">
+          <label><input type="checkbox" name="is_prescription"> рецепт</label>
+          <label><input type="checkbox" name="is_preferential"> льгота</label>
+        </div>
+        <button type="submit">Добавить</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}
