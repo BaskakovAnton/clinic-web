@@ -1,31 +1,54 @@
 {{define "nav"}}
 <header class="site-header">
-  <a class="brand" href="/">Клиника</a>
-  <nav class="nav">
-    {{if eq .Session.Role "admin"}}
-      <a href="/admin" {{if eq .Active "admin"}}class="is-active"{{end}}>Дашборд</a>
-      <a href="/admin/staff" {{if eq .Active "staff"}}class="is-active"{{end}}>Персонал</a>
-      <a href="/admin/mass-slots" {{if eq .Active "mass"}}class="is-active"{{end}}>Слоты</a>
-      <a href="/admin/roles" {{if eq .Active "roles"}}class="is-active"{{end}}>Роли</a>
-    {{end}}
-    {{if or (eq .Session.Role "registrar") (eq .Session.Role "admin")}}
-      <a href="/registrar/patients" {{if eq .Active "patients"}}class="is-active"{{end}}>Пациенты</a>
-      <a href="/registrar/schedule" {{if eq .Active "schedule"}}class="is-active"{{end}}>Расписание</a>
-      <a href="/registrar/slots" {{if eq .Active "slots"}}class="is-active"{{end}}>Свободные</a>
-    {{end}}
-    {{if or (eq .Session.Role "doctor") (eq .Session.Role "admin")}}
-      <a href="/doctor/day" {{if eq .Active "day"}}class="is-active"{{end}}>Мой день</a>
-      <a href="/doctor/patients" {{if eq .Active "doc_patients"}}class="is-active"{{end}}>Карты</a>
-      <a href="/doctor/schedule" {{if eq .Active "doc_schedule"}}class="is-active"{{end}}>Моё расп.</a>
-      <a href="/reports/workload" {{if eq .Active "workload"}}class="is-active"{{end}}>Нагрузка</a>
-      <a href="/reports/preferential" {{if eq .Active "preferential"}}class="is-active"{{end}}>Льготы</a>
-    {{end}}
-  </nav>
-  <div class="user-meta">
-    {{.Session.Login}} · {{roleLabel (printf "%s" .Session.Role)}}
-    <form action="/logout" method="post" style="display:inline;margin-left:.5rem">
-      <button type="submit" class="secondary" style="margin:0;padding:.3rem .7rem;font-size:.85rem">Выйти</button>
-    </form>
+  <div class="header-bar">
+    <a class="brand" href="/">Клиника</a>
+    <button type="button" class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Открыть меню">
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="header-drawer" id="primary-nav">
+    <nav class="nav">
+      {{if eq .Session.Role "admin"}}
+        <a href="/admin" {{if eq .Active "admin"}}class="is-active"{{end}}>Дашборд</a>
+        <a href="/admin/staff" {{if eq .Active "staff"}}class="is-active"{{end}}>Персонал</a>
+        <a href="/admin/mass-slots" {{if eq .Active "mass"}}class="is-active"{{end}}>Слоты</a>
+        <a href="/admin/roles" {{if eq .Active "roles"}}class="is-active"{{end}}>Роли</a>
+      {{end}}
+      {{if or (eq .Session.Role "registrar") (eq .Session.Role "admin")}}
+        <a href="/registrar/patients" {{if eq .Active "patients"}}class="is-active"{{end}}>Пациенты</a>
+        <a href="/registrar/schedule" {{if eq .Active "schedule"}}class="is-active"{{end}}>Расписание</a>
+        <a href="/registrar/slots" {{if eq .Active "slots"}}class="is-active"{{end}}>Свободные</a>
+      {{end}}
+      {{if or (eq .Session.Role "doctor") (eq .Session.Role "admin")}}
+        <a href="/doctor/day" {{if eq .Active "day"}}class="is-active"{{end}}>Мой день</a>
+        <a href="/doctor/patients" {{if eq .Active "doc_patients"}}class="is-active"{{end}}>Карты</a>
+        <a href="/doctor/schedule" {{if eq .Active "doc_schedule"}}class="is-active"{{end}}>Моё расп.</a>
+        <a href="/reports/workload" {{if eq .Active "workload"}}class="is-active"{{end}}>Нагрузка</a>
+        <a href="/reports/preferential" {{if eq .Active "preferential"}}class="is-active"{{end}}>Льготы</a>
+      {{end}}
+    </nav>
+    <div class="user-meta">
+      <span class="user-meta-text">{{.Session.Login}} · {{roleLabel (printf "%s" .Session.Role)}}</span>
+      <form action="/logout" method="post" class="logout-form">
+        <button type="submit" class="secondary btn-logout">Выйти</button>
+      </form>
+    </div>
   </div>
 </header>
+<script>
+(() => {
+  const btn = document.querySelector(".nav-toggle");
+  const header = document.querySelector(".site-header");
+  if (!btn || !header) return;
+  const setOpen = (open) => {
+    header.classList.toggle("is-nav-open", open);
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
+  };
+  btn.addEventListener("click", () => setOpen(!header.classList.contains("is-nav-open")));
+  header.querySelectorAll(".nav a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+})();
+</script>
 {{end}}

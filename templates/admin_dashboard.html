@@ -14,13 +14,34 @@
     {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
     <h1>Дашборд</h1>
     <div class="stats">
-      <div class="stat"><div class="stat-value">{{.Stats.Patients}}</div><div class="stat-label">Пациенты</div></div>
-      <div class="stat"><div class="stat-value">{{.Stats.StaffDoctors}}</div><div class="stat-label">Врачи</div></div>
-      <div class="stat"><div class="stat-value">{{.Stats.StaffNurses}}</div><div class="stat-label">Медсёстры</div></div>
-      <div class="stat"><div class="stat-value">{{.Stats.SlotsFree}}</div><div class="stat-label">Свободные слоты</div></div>
-      <div class="stat"><div class="stat-value">{{.Stats.SlotsBooked}}</div><div class="stat-label">Занятые слоты</div></div>
-      <div class="stat"><div class="stat-value">{{.Stats.Visits}}</div><div class="stat-label">Визиты</div></div>
-      <div class="stat"><div class="stat-value">{{.Stats.Preferential}}</div><div class="stat-label">Льготные назн.</div></div>
+      <a class="stat" href="/registrar/patients">
+        <div class="stat-value">{{.Stats.Patients}}</div>
+        <div class="stat-label">Пациенты</div>
+      </a>
+      <a class="stat" href="/admin/staff">
+        <div class="stat-value">{{.Stats.StaffDoctors}}</div>
+        <div class="stat-label">Врачи</div>
+      </a>
+      <a class="stat" href="/admin/staff">
+        <div class="stat-value">{{.Stats.StaffNurses}}</div>
+        <div class="stat-label">Медсёстры</div>
+      </a>
+      <a class="stat" href="/registrar/slots">
+        <div class="stat-value">{{.Stats.SlotsFree}}</div>
+        <div class="stat-label">Свободные слоты</div>
+      </a>
+      <a class="stat" href="/registrar/schedule">
+        <div class="stat-value">{{.Stats.SlotsBooked}}</div>
+        <div class="stat-label">Занятые слоты</div>
+      </a>
+      <a class="stat" href="/doctor/day">
+        <div class="stat-value">{{.Stats.Visits}}</div>
+        <div class="stat-label">Визиты</div>
+      </a>
+      <a class="stat" href="/reports/preferential">
+        <div class="stat-value">{{.Stats.Preferential}}</div>
+        <div class="stat-label">Льготные назн.</div>
+      </a>
     </div>
     <p class="muted">Быстрые ссылки: <a href="/registrar/patients">пациенты</a> · <a href="/registrar/schedule?date=2026-09-10">расписание 10.09</a> · <a href="/doctor/day?date=2026-09-10">день врача</a></p>
   </main>

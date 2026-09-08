@@ -33,8 +33,10 @@
           <div><label>График</label><input name="work_schedule" value="{{index .Form "work_schedule"}}"></div>
           <div><label>Кабинет</label><input name="office" value="{{index .Form "office"}}"></div>
         </div>
-        <button type="submit">Сохранить</button>
-        <a class="btn secondary" href="/admin/staff">Отмена</a>
+        <div class="form-actions">
+          <button type="submit">Сохранить</button>
+          <a class="btn secondary" href="/admin/staff">Отмена</a>
+        </div>
       </form>
     </div>
   </main>

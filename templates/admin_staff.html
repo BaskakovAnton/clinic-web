@@ -26,10 +26,12 @@
             <td>{{.Department}}</td>
             <td>{{if .Office.Valid}}{{.Office.String}}{{else}}—{{end}}</td>
             <td>
-              <a href="/admin/staff/{{.ID}}/edit">править</a>
-              <form method="post" action="/admin/staff/{{.ID}}/delete" style="display:inline" onsubmit="return confirm('Удалить? Может упасть на FK.')">
-                <button type="submit" class="secondary" style="margin-left:.5rem">удалить</button>
-              </form>
+              <div class="row-actions">
+                <a href="/admin/staff/{{.ID}}/edit">править</a>
+                <form method="post" action="/admin/staff/{{.ID}}/delete" onsubmit="return confirm('Удалить? Может упасть на FK.')">
+                  <button type="submit" class="link-action danger">удалить</button>
+                </form>
+              </div>
             </td>
           </tr>
           {{end}}

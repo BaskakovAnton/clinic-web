@@ -13,7 +13,14 @@
   <main>
     <h1>Моё расписание (только просмотр)</h1>
     <form class="toolbar" method="get" action="/doctor/schedule">
-      <div class="field"><label>Дата</label><input type="date" name="date" value="{{.Date}}"></div>
+      <div class="field">
+        <label>Дата</label>
+        <div class="date-nav">
+          <a class="date-nav-btn" href="/doctor/schedule?date={{shiftDate .Date -1}}&doctor_id={{.DoctorID}}" aria-label="Предыдущий день">◀</a>
+          <input type="date" name="date" value="{{.Date}}">
+          <a class="date-nav-btn" href="/doctor/schedule?date={{shiftDate .Date 1}}&doctor_id={{.DoctorID}}" aria-label="Следующий день">▶</a>
+        </div>
+      </div>
       <div class="field">
         <label>Врач</label>
         <select name="doctor_id">

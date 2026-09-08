@@ -34,8 +34,10 @@
           <div><label>Адрес</label><input name="address" value="{{index .Form "address"}}"></div>
           <div><label>Контакты</label><input name="contacts" value="{{index .Form "contacts"}}"></div>
         </div>
-        <button type="submit">Сохранить</button>
-        <a class="btn secondary" href="/registrar/patients">Отмена</a>
+        <div class="form-actions">
+          <button type="submit">Сохранить</button>
+          <a class="btn secondary" href="/registrar/patients">Отмена</a>
+        </div>
       </form>
     </div>
   </main>

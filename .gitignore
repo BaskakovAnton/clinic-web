@@ -12,6 +12,9 @@ vendor/
 *.log
 *.tmp
 .env
+.env.amvera
+.env.*
+!.env.example
 
 # Конфигурации IDE
 .idea/

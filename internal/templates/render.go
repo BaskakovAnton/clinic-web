@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"io"
 	"path/filepath"
+	"time"
 )
 
 type Renderer struct {
@@ -24,6 +25,13 @@ func New(dir string) (*Renderer, error) {
 			default:
 				return role
 			}
+		},
+		"shiftDate": func(date string, days int) string {
+			t, err := time.Parse("2006-01-02", date)
+			if err != nil {
+				return date
+			}
+			return t.AddDate(0, 0, days).Format("2006-01-02")
 		},
 	}
 	pattern := filepath.Join(dir, "*.html")
