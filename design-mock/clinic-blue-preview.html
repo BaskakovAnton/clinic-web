@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Превью · Клиника (голубая концепция)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+  <style>
+    /* Макет, не прод. Дух: корпоративная медклиника (шапка, воздух, сетка услуг)
+       + ТЗ Динары: голубые тона, крупнее верх, фон, меньше пустоты. */
+    :root {
+      --bg: #e8f1f8;
+      --bg-deep: #d3e4f2;
+      --ink: #0f2740;
+      --muted: #5a738c;
+      --line: #b9cfe0;
+      --surface: #ffffff;
+      --accent: #1a6fb5;
+      --accent-2: #2f8fd6;
+      --accent-soft: #dff0fb;
+      --accent-deep: #0d4f86;
+      --ok: #1a6fb5;
+      --danger: #a33b3b;
+      --font: "Manrope", system-ui, sans-serif;
+      --display: "Source Serif 4", Georgia, serif;
+      --shadow: 0 18px 50px rgba(15, 55, 95, 0.12);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, #b9dcf5 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, #cfe6f7 0%, transparent 50%),
+        linear-gradient(180deg, var(--bg) 0%, #f4f8fc 45%, var(--bg-deep) 100%);
+      min-height: 100vh;
+    }
+
+    .mock-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 1.25rem;
+      background: rgba(15, 39, 64, 0.92);
+      color: #eaf4fc;
+      backdrop-filter: blur(8px);
+    }
+    .mock-bar strong { font-weight: 700; letter-spacing: -0.02em; }
+    .mock-bar span { color: #9eb6cc; font-size: 0.85rem; }
+    .tabs { display: flex; gap: 0.4rem; }
+    .tabs button {
+      border: 1px solid #3a5874;
+      background: transparent;
+      color: #d7e7f5;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.85rem;
+    }
+    .tabs button.is-on {
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+      color: #fff;
+    }
+
+    .screen { display: none; }
+    .screen.is-on { display: block; }
+
+    /* —— LOGIN —— */
+    .login-shell {
+      min-height: calc(100vh - 52px);
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      gap: 0;
+    }
+    .login-visual {
+      position: relative;
+      padding: clamp(2rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      background:
+        linear-gradient(160deg, rgba(13, 79, 134, 0.88), rgba(26, 111, 181, 0.55)),
+        linear-gradient(45deg, #0d4f86, #5aa7de);
+      color: #f4f9fd;
+    }
+    .login-visual::before {
+      content: "";
+      position: absolute;
+      inset: -20% 20% auto -10%;
+      height: 70%;
+      background: radial-gradient(circle, rgba(255,255,255,0.22), transparent 65%);
+      pointer-events: none;
+    }
+    .login-visual h1 {
+      position: relative;
+      margin: 0 0 0.75rem;
+      font-family: var(--display);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      max-width: 12ch;
+    }
+    .login-visual p {
+      position: relative;
+      margin: 0;
+      max-width: 34ch;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: rgba(244, 249, 253, 0.88);
+    }
+    .login-panel {
+      display: grid;
+      place-items: center;
+      padding: 2rem 1.5rem;
+    }
+    .login-card {
+      width: min(440px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 4px);
+      padding: 2rem 1.75rem 1.75rem;
+      box-shadow: var(--shadow);
+    }
+    .login-card .eyebrow {
+      margin: 0 0 0.35rem;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .login-card h2 {
+      margin: 0 0 0.4rem;
+      font-size: 1.85rem;
+      letter-spacing: -0.03em;
+    }
+    .hint {
+      margin: 0 0 1.35rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    label {
+      display: block;
+      margin: 0 0 0.35rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    input {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.85rem 0.95rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font: inherit;
+      background: #f7fbfe;
+    }
+    input:focus {
+      outline: 2px solid rgba(26, 111, 181, 0.35);
+      border-color: var(--accent);
+    }
+    button.primary {
+      width: 100%;
+      margin-top: 0.35rem;
+      padding: 0.9rem 1rem;
+      border: 0;
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(26, 111, 181, 0.28);
+    }
+
+    /* —— APP SHELL —— */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      padding: 1.1rem clamp(1.25rem, 3vw, 2.5rem);
+      border-bottom: 1px solid rgba(185, 207, 224, 0.9);
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(10px);
+    }
+    .brand-block { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+    .brand {
+      font-size: clamp(1.55rem, 2.4vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      text-decoration: none;
+      line-height: 1.1;
+    }
+    .brand-sub {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1rem;
+      align-items: center;
+    }
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .nav a.is-active,
+    .nav a:hover { color: var(--accent-deep); }
+    .user-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .btn-ghost {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 0.35rem 0.75rem;
+      font: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    main.app {
+      width: min(1280px, calc(100% - 2.5rem));
+      margin: 1.75rem auto 3rem;
+    }
+    .page-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .page-head h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 3vw, 2.45rem);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+    .page-head p {
+      margin: 0.45rem 0 0;
+      color: var(--muted);
+      max-width: 48ch;
+    }
+
+    .hero-strip {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .hero-panel {
+      border-radius: var(--radius);
+      padding: 1.5rem 1.6rem;
+      background:
+        linear-gradient(135deg, rgba(13, 79, 134, 0.95), rgba(47, 143, 214, 0.85)),
+        #1a6fb5;
+      color: #f5faff;
+      box-shadow: var(--shadow);
+      min-height: 180px;
+    }
+    .hero-panel h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.55rem;
+      letter-spacing: -0.03em;
+    }
+    .hero-panel p {
+      margin: 0;
+      max-width: 40ch;
+      color: rgba(245, 250, 255, 0.9);
+      line-height: 1.45;
+    }
+    .side-panel {
+      border-radius: var(--radius);
+      padding: 1.35rem 1.4rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .side-panel .label { color: var(--muted); font-size: 0.85rem; font-weight: 600; }
+    .side-panel .big {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--accent-deep);
+      line-height: 1;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+    .stat {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.15rem 1.2rem;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+      min-height: 112px;
+    }
+    .stat:hover {
+      border-color: var(--accent-2);
+      transform: translateY(-2px);
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--accent-deep);
+      line-height: 1;
+    }
+    .stat-label {
+      margin-top: 0.55rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1rem;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.25rem;
+      overflow: auto;
+    }
+    .panel h3 {
+      margin: 0 0 1rem;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.7rem 0.45rem;
+      border-bottom: 1px solid #e4eef6;
+    }
+    th { color: var(--muted); font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .list-links { display: grid; gap: 0.55rem; }
+    .list-links a {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 0.95rem;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      text-decoration: none;
+      font-weight: 650;
+    }
+
+    .note {
+      margin: 1.5rem auto 2rem;
+      width: min(1280px, calc(100% - 2.5rem));
+      padding: 1rem 1.15rem;
+      border-radius: 10px;
+      border: 1px dashed var(--line);
+      background: rgba(255,255,255,0.65);
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 960px) {
+      .login-shell { grid-template-columns: 1fr; }
+      .login-visual { min-height: 240px; }
+      .hero-strip, .stats, .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero-strip, .stats, .grid-2 { grid-template-columns: 1fr; }
+      .nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mock-bar">
+    <div>
+      <strong>Превью дизайна</strong>
+      <span> · не прод · референс-дух centr-hirurgii + ТЗ «голубые тона»</span>
+    </div>
+    <div class="tabs">
+      <button type="button" class="is-on" data-screen="login">Логин</button>
+      <button type="button" data-screen="admin">Админ-дашборд</button>
+    </div>
+  </div>
+
+  <section id="login" class="screen is-on">
+    <div class="login-shell">
+      <div class="login-visual">
+        <h1>Клиника</h1>
+        <p>Учебный кабинет записи и ведения приёма. Крупный бренд слева — как сильный первый сигнал на маркетинговых медсайтах.</p>
+      </div>
+      <div class="login-panel">
+        <div class="login-card">
+          <p class="eyebrow">Вход в систему</p>
+          <h2>Добро пожаловать</h2>
+          <p class="hint">Учебные логины: u_admin / u_registrar / u_doctor · пароль ClinicDemo1!</p>
+          <form onsubmit="return false;">
+            <label for="login">Логин</label>
+            <input id="login" value="u_admin" autocomplete="username">
+            <label for="password">Пароль</label>
+            <input id="password" type="password" value="••••••••" autocomplete="current-password">
+            <button class="primary" type="submit">Войти</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="admin" class="screen">
+    <header class="site-header">
+      <div class="brand-block">
+        <a class="brand" href="#">Клиника</a>
+        <div class="brand-sub">Кабинет администратора</div>
+      </div>
+      <nav class="nav">
+        <a class="is-active" href="#">Дашборд</a>
+        <a href="#">Персонал</a>
+        <a href="#">Роли</a>
+        <a href="#">Слоты</a>
+        <a href="#">Отчёты</a>
+      </nav>
+      <div class="user-meta">
+        <span class="chip">u_admin</span>
+        <button class="btn-ghost" type="button">Выйти</button>
+      </div>
+    </header>
+
+    <main class="app">
+      <div class="page-head">
+        <div>
+          <h1>Дашборд</h1>
+          <p>Широкая сетка и синяя «плашка» сверху заполняют пустоту — вместо одинокой карточки посреди экрана.</p>
+        </div>
+      </div>
+
+      <div class="hero-strip">
+        <div class="hero-panel">
+          <h2>Сводка по поликлинике</h2>
+          <p>Быстрый обзор нагрузки и записи. Акцент — голубой корпоративный, как у медцентров, но под SSR-кабинет, не лендинг.</p>
+        </div>
+        <div class="side-panel">
+          <div>
+            <div class="label">Свободные слоты сегодня</div>
+            <div class="big">12</div>
+          </div>
+          <div class="label">Демо-дата: 10.09.2026</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <a class="stat" href="#"><div class="stat-value">3</div><div class="stat-label">Пациенты</div></a>
+        <a class="stat" href="#"><div class="stat-value">4</div><div class="stat-label">Врачи / персонал</div></a>
+        <a class="stat" href="#"><div class="stat-value">7</div><div class="stat-label">Записи</div></a>
+        <a class="stat" href="#"><div class="stat-value">3</div><div class="stat-label">Визиты</div></a>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Ближайшие записи</h3>
+          <table>
+            <thead>
+              <tr><th>Пациент</th><th>Врач</th><th>Время</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Иванова А.П.</td><td>Петров И.С.</td><td>10:00</td></tr>
+              <tr><td>Сидоров К.М.</td><td>Козлова Е.В.</td><td>10:30</td></tr>
+              <tr><td>Орлова Н.И.</td><td>Петров И.С.</td><td>11:00</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h3>Быстрые ссылки</h3>
+          <div class="list-links">
+            <a href="#"><span>Пациенты</span><span>→</span></a>
+            <a href="#"><span>Расписание 10.09</span><span>→</span></a>
+            <a href="#"><span>День врача</span><span>→</span></a>
+            <a href="#"><span>Льготные назначения</span><span>→</span></a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <p class="note">
+    Это статический макет. Из референса centr-hirurgii берём не копипаст лендинга, а приёмы:
+    сильный бренд в шапке, цветной «первый экран», широкая сетка блоков, голубая палитра под ТЗ.
+    В прод (templates + app.css) пока не переносим.
+  </p>
+
+  <script>
+    const tabs = document.querySelectorAll(".tabs button");
+    const screens = document.querySelectorAll(".screen");
+    tabs.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabs.forEach((b) => b.classList.toggle("is-on", b === btn));
+        screens.forEach((s) => s.classList.toggle("is-on", s.id === btn.dataset.screen));
+      });
+    });
+  </script>
+</body>
+</html>

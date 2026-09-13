@@ -25,3 +25,9 @@ vendor/
 # Системные файлы
 .DS_Store
 Thumbs.db
+
+# Design review tooling
+design-mock/node_modules/
+design-mock/screens/
+design-mock/*.zip
+design-mock/package-lock.json

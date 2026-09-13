@@ -7,22 +7,29 @@
   <title>Вход · Клиника</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
-  <div class="login-wrap">
-    <div class="login-card">
+  <div class="login-shell">
+    <div class="login-visual">
       <h1>Клиника</h1>
-      <p class="hint">Учебные логины: u_admin / u_registrar / u_doctor</p>
-      {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
-      <form method="post" action="/login">
-        <label for="login">Логин</label>
-        <input id="login" name="login" required autocomplete="username" placeholder="u_registrar">
-        <label for="password">Пароль</label>
-        <input id="password" name="password" type="password" required autocomplete="current-password">
-        <button type="submit">Войти</button>
-      </form>
+      <p>Учебный кабинет записи и ведения приёма для регистратуры, врача и администратора.</p>
+    </div>
+    <div class="login-panel">
+      <div class="login-card">
+        <p class="eyebrow">Вход в систему</p>
+        <h2>Добро пожаловать</h2>
+        <p class="hint">Учебные логины: u_admin / u_registrar / u_doctor</p>
+        {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+        <form method="post" action="/login">
+          <label for="login">Логин</label>
+          <input id="login" name="login" required autocomplete="username" placeholder="u_registrar">
+          <label for="password">Пароль</label>
+          <input id="password" name="password" type="password" required autocomplete="current-password">
+          <button type="submit">Войти</button>
+        </form>
+      </div>
     </div>
   </div>
 </body>

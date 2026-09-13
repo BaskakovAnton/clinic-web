@@ -1,7 +1,10 @@
 {{define "nav"}}
 <header class="site-header">
   <div class="header-bar">
-    <a class="brand" href="/">Клиника</a>
+    <div class="brand-block">
+      <a class="brand" href="/">Клиника</a>
+      <div class="brand-sub">{{roleLabel (printf "%s" .Session.Role)}}</div>
+    </div>
     <button type="button" class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Открыть меню">
       <span class="nav-toggle-bar" aria-hidden="true"></span>
       <span class="nav-toggle-bar" aria-hidden="true"></span>
@@ -30,7 +33,7 @@
       {{end}}
     </nav>
     <div class="user-meta">
-      <span class="user-meta-text">{{.Session.Login}} · {{roleLabel (printf "%s" .Session.Role)}}</span>
+      <span class="user-chip">{{.Session.Login}}</span>
       <form action="/logout" method="post" class="logout-form">
         <button type="submit" class="secondary btn-logout">Выйти</button>
       </form>

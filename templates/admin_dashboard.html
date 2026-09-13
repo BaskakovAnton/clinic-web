@@ -5,14 +5,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{.Title}} · Клиника</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
   {{template "nav" .}}
   <main>
     {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
-    <h1>Дашборд</h1>
+    <div class="page-head">
+      <h1>Дашборд</h1>
+      <p>Сводка по записи, персоналу и визитам.</p>
+    </div>
+
+    <div class="hero-strip">
+      <div class="hero-panel">
+        <h2>Сводка по поликлинике</h2>
+        <p>Быстрый обзор нагрузки и записи. Переходите в разделы через карточки ниже.</p>
+      </div>
+      <div class="side-panel">
+        <div>
+          <div class="label">Свободные слоты</div>
+          <div class="big">{{.Stats.SlotsFree}}</div>
+        </div>
+        <div class="label">Занято: {{.Stats.SlotsBooked}}</div>
+      </div>
+    </div>
+
     <div class="stats">
       <a class="stat" href="/registrar/patients">
         <div class="stat-value">{{.Stats.Patients}}</div>
@@ -43,7 +63,12 @@
         <div class="stat-label">Льготные назн.</div>
       </a>
     </div>
-    <p class="muted">Быстрые ссылки: <a href="/registrar/patients">пациенты</a> · <a href="/registrar/schedule?date=2026-09-10">расписание 10.09</a> · <a href="/doctor/day?date=2026-09-10">день врача</a></p>
+
+    <div class="quick-links">
+      <a href="/registrar/patients">Пациенты</a>
+      <a href="/registrar/schedule?date=2026-09-10">Расписание 10.09</a>
+      <a href="/doctor/day?date=2026-09-10">День врача</a>
+    </div>
   </main>
 </body>
 </html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Клиника — согласование дизайна</title>
+  <style>
+    :root { --ink:#0f2740; --muted:#5a738c; --line:#b9cfe0; --accent:#1a6fb5; --bg:#eef4f9; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, sans-serif; color:var(--ink); background:var(--bg); }
+    .top { position:sticky; top:0; z-index:5; background:#0d4f86; color:#fff; padding:1rem 1.25rem; }
+    .top h1 { margin:0 0 .35rem; font-size:1.35rem; }
+    .top p { margin:0; opacity:.9; font-size:.92rem; }
+    .toc { display:flex; flex-wrap:wrap; gap:.4rem; padding:1rem 1.25rem; background:#fff; border-bottom:1px solid var(--line); }
+    .toc a { text-decoration:none; color:var(--accent); background:#dff0fb; padding:.35rem .65rem; border-radius:999px; font-size:.82rem; }
+    .shot { padding:1.25rem; border-bottom:1px solid var(--line); }
+    .shot header { display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:baseline; margin-bottom:.75rem; }
+    .shot h2 { margin:0; font-size:1.15rem; }
+    .shot code { color:var(--muted); font-size:.85rem; }
+    figure { margin:0; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(15,55,95,.08); }
+    img { display:block; width:100%; height:auto; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <h1>Клиника — макет интерфейса на согласование</h1>
+    <p>Локальная версия · голубая тема · 13.09.2026 16:23 · 22 экранов</p>
+  </div>
+  <nav class="toc">
+      <a href="#01-login">Вход</a>
+      <a href="#02-admin-dashboard">Админ · Дашборд</a>
+      <a href="#03-admin-staff">Админ · Персонал</a>
+      <a href="#04-admin-staff-new">Админ · Новый сотрудник</a>
+      <a href="#05-admin-staff-edit">Админ · Редактирование сотрудника</a>
+      <a href="#06-admin-roles">Админ · Роли</a>
+      <a href="#07-admin-mass-slots">Админ · Массовые слоты</a>
+      <a href="#08-registrar-patients">Регистратура · Пациенты</a>
+      <a href="#09-registrar-patient-new">Регистратура · Новый пациент</a>
+      <a href="#10-registrar-patient">Регистратура · Карточка пациента</a>
+      <a href="#11-registrar-patient-edit">Регистратура · Редактирование пациента</a>
+      <a href="#12-registrar-slots">Регистратура · Свободные слоты</a>
+      <a href="#13-registrar-schedule">Регистратура · Расписание</a>
+      <a href="#14-doctor-day">Врач · Мой день</a>
+      <a href="#15-doctor-patients">Врач · Карты пациентов</a>
+      <a href="#16-doctor-patient">Врач · Карта пациента</a>
+      <a href="#17-doctor-schedule">Врач · Моё расписание</a>
+      <a href="#18-doctor-visit">Врач · Визит</a>
+      <a href="#19-reports-workload">Отчёт · Нагрузка</a>
+      <a href="#20-reports-preferential">Отчёт · Льготные назначения</a>
+      <a href="#21-registrar-home">Роль регистратура · Пациенты</a>
+      <a href="#22-doctor-home">Роль врач · Мой день</a>
+  </nav>
+    <section class="shot" id="01-login">
+      <header>
+        <h2>Вход</h2>
+        <code>/login</code>
+      </header>
+      <figure>
+        <img src="screens/01-login.png" alt="Вход" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="02-admin-dashboard">
+      <header>
+        <h2>Админ · Дашборд</h2>
+        <code>/admin</code>
+      </header>
+      <figure>
+        <img src="screens/02-admin-dashboard.png" alt="Админ · Дашборд" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="03-admin-staff">
+      <header>
+        <h2>Админ · Персонал</h2>
+        <code>/admin/staff</code>
+      </header>
+      <figure>
+        <img src="screens/03-admin-staff.png" alt="Админ · Персонал" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="04-admin-staff-new">
+      <header>
+        <h2>Админ · Новый сотрудник</h2>
+        <code>/admin/staff/new</code>
+      </header>
+      <figure>
+        <img src="screens/04-admin-staff-new.png" alt="Админ · Новый сотрудник" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="05-admin-staff-edit">
+      <header>
+        <h2>Админ · Редактирование сотрудника</h2>
+        <code>/admin/staff/1/edit</code>
+      </header>
+      <figure>
+        <img src="screens/05-admin-staff-edit.png" alt="Админ · Редактирование сотрудника" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="06-admin-roles">
+      <header>
+        <h2>Админ · Роли</h2>
+        <code>/admin/roles</code>
+      </header>
+      <figure>
+        <img src="screens/06-admin-roles.png" alt="Админ · Роли" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="07-admin-mass-slots">
+      <header>
+        <h2>Админ · Массовые слоты</h2>
+        <code>/admin/mass-slots</code>
+      </header>
+      <figure>
+        <img src="screens/07-admin-mass-slots.png" alt="Админ · Массовые слоты" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="08-registrar-patients">
+      <header>
+        <h2>Регистратура · Пациенты</h2>
+        <code>/registrar/patients</code>
+      </header>
+      <figure>
+        <img src="screens/08-registrar-patients.png" alt="Регистратура · Пациенты" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="09-registrar-patient-new">
+      <header>
+        <h2>Регистратура · Новый пациент</h2>
+        <code>/registrar/patients/new</code>
+      </header>
+      <figure>
+        <img src="screens/09-registrar-patient-new.png" alt="Регистратура · Новый пациент" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="10-registrar-patient">
+      <header>
+        <h2>Регистратура · Карточка пациента</h2>
+        <code>/registrar/patients/1</code>
+      </header>
+      <figure>
+        <img src="screens/10-registrar-patient.png" alt="Регистратура · Карточка пациента" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="11-registrar-patient-edit">
+      <header>
+        <h2>Регистратура · Редактирование пациента</h2>
+        <code>/registrar/patients/1/edit</code>
+      </header>
+      <figure>
+        <img src="screens/11-registrar-patient-edit.png" alt="Регистратура · Редактирование пациента" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="12-registrar-slots">
+      <header>
+        <h2>Регистратура · Свободные слоты</h2>
+        <code>/registrar/slots</code>
+      </header>
+      <figure>
+        <img src="screens/12-registrar-slots.png" alt="Регистратура · Свободные слоты" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="13-registrar-schedule">
+      <header>
+        <h2>Регистратура · Расписание</h2>
+        <code>/registrar/schedule?date=2026-09-10</code>
+      </header>
+      <figure>
+        <img src="screens/13-registrar-schedule.png" alt="Регистратура · Расписание" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="14-doctor-day">
+      <header>
+        <h2>Врач · Мой день</h2>
+        <code>/doctor/day?date=2026-09-10</code>
+      </header>
+      <figure>
+        <img src="screens/14-doctor-day.png" alt="Врач · Мой день" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="15-doctor-patients">
+      <header>
+        <h2>Врач · Карты пациентов</h2>
+        <code>/doctor/patients</code>
+      </header>
+      <figure>
+        <img src="screens/15-doctor-patients.png" alt="Врач · Карты пациентов" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="16-doctor-patient">
+      <header>
+        <h2>Врач · Карта пациента</h2>
+        <code>/doctor/patients/1</code>
+      </header>
+      <figure>
+        <img src="screens/16-doctor-patient.png" alt="Врач · Карта пациента" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="17-doctor-schedule">
+      <header>
+        <h2>Врач · Моё расписание</h2>
+        <code>/doctor/schedule</code>
+      </header>
+      <figure>
+        <img src="screens/17-doctor-schedule.png" alt="Врач · Моё расписание" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="18-doctor-visit">
+      <header>
+        <h2>Врач · Визит</h2>
+        <code>/doctor/visits/1</code>
+      </header>
+      <figure>
+        <img src="screens/18-doctor-visit.png" alt="Врач · Визит" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="19-reports-workload">
+      <header>
+        <h2>Отчёт · Нагрузка</h2>
+        <code>/reports/workload</code>
+      </header>
+      <figure>
+        <img src="screens/19-reports-workload.png" alt="Отчёт · Нагрузка" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="20-reports-preferential">
+      <header>
+        <h2>Отчёт · Льготные назначения</h2>
+        <code>/reports/preferential</code>
+      </header>
+      <figure>
+        <img src="screens/20-reports-preferential.png" alt="Отчёт · Льготные назначения" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="21-registrar-home">
+      <header>
+        <h2>Роль регистратура · Пациенты</h2>
+        <code>/registrar/patients</code>
+      </header>
+      <figure>
+        <img src="screens/21-registrar-home.png" alt="Роль регистратура · Пациенты" loading="lazy">
+      </figure>
+    </section>
+    <section class="shot" id="22-doctor-home">
+      <header>
+        <h2>Роль врач · Мой день</h2>
+        <code>/doctor/day?date=2026-09-10</code>
+      </header>
+      <figure>
+        <img src="screens/22-doctor-home.png" alt="Роль врач · Мой день" loading="lazy">
+      </figure>
+    </section>
+</body>
+</html>

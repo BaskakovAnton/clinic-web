@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{.Title}} · Клиника</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
@@ -36,18 +38,18 @@
     <div class="panel">
       {{if not .Appointments}}<p class="empty">На день записей нет</p>{{else}}
       <table>
-        <thead><tr><th>Время</th><th>Статус</th><th>Пациент</th><th></th></tr></thead>
+        <thead><tr><th>Время</th><th>Статус</th><th>Пациент</th><th class="col-actions"></th></tr></thead>
         <tbody>
           {{range .Appointments}}
           <tr>
             <td>{{.StartAt.Format "15:04"}}</td>
             <td>{{.Status}}{{if .HasVisit}} · визит оформлен{{end}}</td>
             <td>{{if .PatientName.Valid}}{{.PatientName.String}}{{else}}—{{end}}</td>
-            <td>
+            <td class="col-actions">
               {{if and (eq .Status "booked") .PatientID.Valid (not .HasVisit)}}
               <a class="btn" href="/doctor/patients/{{.PatientID.Int64}}?appointment_id={{.ID}}">Начать приём</a>
               {{else if and .HasVisit .PatientID.Valid}}
-              <a href="/doctor/patients/{{.PatientID.Int64}}">Карта</a>
+              <a class="btn secondary" href="/doctor/patients/{{.PatientID.Int64}}">Карта</a>
               {{end}}
             </td>
           </tr>
