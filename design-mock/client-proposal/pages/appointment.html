@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Запись на приём</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/mock.css">
+</head>
+<body>
+  <div class="topstrip"><div class="wrap"><span>Онлайн-запись</span><a href="tel:+74950000000">+7 (495) 000-00-00</a></div></div>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="home.html"><div class="brand-mark">К</div><div><strong>Клиника</strong><span>Медицинский центр</span></div></a>
+      <nav class="nav">
+        <a href="services.html">Услуги</a>
+        <a href="doctors.html">Врачи</a>
+        <a href="appointment.html">Запись</a>
+        <a href="contacts.html">Контакты</a>
+      </nav>
+      <div class="header-cta">
+        <a class="phone" href="tel:+74950000000">+7 (495) 000-00-00</a>
+        <a class="btn btn-primary" href="appointment.html">Записаться</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap page-title">
+    <div class="crumbs"><a href="home.html">Главная</a> / Запись</div>
+    <h1>Запись на приём</h1>
+    <p class="lead">Заявка с сайта — предварительная. Администратор подтвердит время. Макет формы.</p>
+  </div>
+
+  <section class="section" style="padding-top:.25rem">
+    <div class="wrap split">
+      <form class="panel" onsubmit="event.preventDefault(); alert('Макет: заявка не отправляется');">
+        <div class="form-grid">
+          <div>
+            <label>Имя</label>
+            <input placeholder="Как к вам обращаться" required>
+          </div>
+          <div>
+            <label>Телефон</label>
+            <input type="tel" placeholder="+7 (___) ___-__-__" required>
+          </div>
+        </div>
+        <label>Направление / услуга</label>
+        <select>
+          <option>Кардиология</option>
+          <option>Check-up</option>
+          <option>УЗИ</option>
+          <option>Амбулаторная хирургия</option>
+          <option>Стоматология</option>
+          <option>Другое из 30 услуг</option>
+        </select>
+        <div class="form-grid">
+          <div>
+            <label>Желаемая дата</label>
+            <input type="date">
+          </div>
+          <div>
+            <label>Врач (необязательно)</label>
+            <select>
+              <option>Любой свободный</option>
+              <option>Попова К. М.</option>
+              <option>Воронова Ю. О.</option>
+            </select>
+          </div>
+        </div>
+        <label>Комментарий</label>
+        <textarea rows="3" placeholder="Жалобы, удобное время, вопрос по операции…"></textarea>
+        <button class="btn btn-accent btn-wide" type="submit">Отправить заявку</button>
+        <p style="margin:.75rem 0 0;font-size:.82rem;color:var(--muted)">Нажимая кнопку, вы соглашаетесь на обработку персональных данных (текст для макета).</p>
+      </form>
+      <aside class="panel">
+        <h2 style="margin:0 0 .5rem;font-size:1.15rem">Как это работает</h2>
+        <ul class="list-check">
+          <li>Оставляете заявку на сайте</li>
+          <li>Администратор звонит и подтверждает слот</li>
+          <li>Врач видит запись в admin-кабинете</li>
+        </ul>
+        <hr style="border:0;border-top:1px solid var(--line);margin:1.1rem 0">
+        <p style="margin:0;color:var(--muted);font-size:.9rem">Скорая / экстренно: <strong style="color:var(--ink)">+7 (495) 000-00-00</strong></p>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="wrap"><div><h4>Клиника</h4><p>Макет формы записи.</p></div></div></footer>
+</body>
+</html>

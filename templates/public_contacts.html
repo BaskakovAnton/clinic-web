@@ -1,0 +1,35 @@
+{{define "public_contacts.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/public.css">
+</head>
+<body>
+  {{template "public_nav" .}}
+  <div class="wrap page-title">
+    <div class="crumbs"><a href="/">Главная</a> / Контакты</div>
+    <h1>Контакты</h1>
+  </div>
+  <section class="section" style="padding-top:.25rem">
+    <div class="wrap split">
+      <div class="panel">
+        <h2 style="margin:0 0 .75rem;font-size:1.15rem">Клиника</h2>
+        <p style="margin:0 0 .5rem"><strong>Адрес:</strong> Москва, ул. Примерная, 1</p>
+        <p style="margin:0 0 .5rem"><strong>Телефон:</strong> +7 (495) 000-00-00</p>
+        <p style="margin:0 0 .5rem"><strong>Email:</strong> contact@clinic.example</p>
+        <p style="margin:0 0 1rem"><strong>Часы:</strong> Пн–Пт 8:30–20:00 · Сб–Вс 8:30–17:00</p>
+        <a class="btn btn-accent" href="/appointment">Записаться</a>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden;min-height:260px">
+        <img class="map-photo" src="/static/img/contacts-map.jpg" alt="Клиника">
+      </div>
+    </div>
+  </section>
+  {{template "public_footer" .}}
+</body>
+</html>
+{{end}}

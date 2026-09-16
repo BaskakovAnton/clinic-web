@@ -33,6 +33,20 @@ func New(dir string) (*Renderer, error) {
 			}
 			return t.AddDate(0, 0, days).Format("2006-01-02")
 		},
+		"doctorPhoto": func(i int) string {
+			n := (i % 6) + 1
+			return fmt.Sprintf("/static/img/doctor-%02d.jpg", n)
+		},
+		"priceFmt": func(v any) string {
+			switch t := v.(type) {
+			case int64:
+				return fmt.Sprintf("%d", t)
+			case int:
+				return fmt.Sprintf("%d", t)
+			default:
+				return ""
+			}
+		},
 	}
 	pattern := filepath.Join(dir, "*.html")
 	t, err := template.New("").Funcs(funcs).ParseGlob(pattern)

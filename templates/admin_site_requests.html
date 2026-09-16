@@ -1,0 +1,55 @@
+{{define "admin_site_requests.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <div class="page-head">
+      <h1>Заявки с сайта</h1>
+      <p>Заявки с формы /appointment.</p>
+    </div>
+    <div class="panel" style="overflow:auto;padding:0">
+      <table>
+        <thead>
+          <tr><th>Когда</th><th>Имя</th><th>Телефон</th><th>Услуга</th><th>Дата</th><th>Статус</th><th></th></tr>
+        </thead>
+        <tbody>
+          {{range .Requests}}
+          <tr>
+            <td>{{.CreatedAt.Format "02.01 15:04"}}</td>
+            <td>{{.FullName}}</td>
+            <td>{{.Phone}}</td>
+            <td>{{if .ServiceSlug.Valid}}{{.ServiceSlug.String}}{{else}}—{{end}}</td>
+            <td>{{if .PreferredDate.Valid}}{{.PreferredDate.Time.Format "02.01.2006"}}{{else}}—{{end}}</td>
+            <td>{{.Status}}</td>
+            <td>
+              <form method="post" action="/admin/site-requests/{{.ID}}/status" class="inline-form">
+                <select name="status">
+                  <option value="new" {{if eq .Status "new"}}selected{{end}}>new</option>
+                  <option value="called" {{if eq .Status "called"}}selected{{end}}>called</option>
+                  <option value="done" {{if eq .Status "done"}}selected{{end}}>done</option>
+                  <option value="cancelled" {{if eq .Status "cancelled"}}selected{{end}}>cancelled</option>
+                </select>
+                <button type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+          {{else}}
+          <tr><td colspan="7">Заявок пока нет</td></tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}

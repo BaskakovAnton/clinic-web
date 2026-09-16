@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Клиника — макеты на согласование (клиент + admin)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #12324f;
+      --muted: #5d7690;
+      --line: #d5e4f0;
+      --bg: #f3f7fb;
+      --surface: #fff;
+      --blue: #0b6cb5;
+      --blue-deep: #084f86;
+      --blue-soft: #e7f3fc;
+      --cta: #e35a2d;
+      --ok: #1a7a4c;
+      --font: "Manrope", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+    }
+    .bar {
+      position: sticky; top: 0; z-index: 40;
+      background: #0a2f4d; color: #eaf4fc;
+      padding: .85rem 1.25rem;
+      display: flex; flex-wrap: wrap; gap: .75rem 1rem;
+      align-items: center; justify-content: space-between;
+    }
+    .bar h1 { margin: 0; font-size: 1rem; font-weight: 700; }
+    .bar p { margin: .2rem 0 0; font-size: .82rem; opacity: .8; }
+    .toc {
+      display: flex; flex-wrap: wrap; gap: .4rem;
+      padding: 1rem 1.25rem; background: #fff; border-bottom: 1px solid var(--line);
+    }
+    .toc a {
+      text-decoration: none; color: var(--blue);
+      background: var(--blue-soft); padding: .35rem .7rem;
+      border-radius: 999px; font-size: .82rem; font-weight: 600;
+    }
+    .shot { padding: 1.25rem; border-bottom: 1px solid var(--line); }
+    .shot header {
+      display: flex; flex-wrap: wrap; gap: .4rem 1rem;
+      align-items: baseline; margin-bottom: .75rem;
+    }
+    .shot h2 { margin: 0; font-size: 1.15rem; }
+    .shot code { color: var(--muted); font-size: .85rem; }
+    .frame {
+      background: #fff; border: 1px solid var(--line); border-radius: 14px;
+      overflow: hidden; box-shadow: 0 14px 40px rgba(12,55,95,.08);
+    }
+    .frame iframe { display: block; width: 100%; height: 920px; border: 0; background: #fff; }
+    .note {
+      margin: 1rem 1.25rem 0; padding: 1rem 1.15rem;
+      background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    }
+    .note h3 { margin: 0 0 .5rem; font-size: 1rem; }
+    .note ul { margin: 0; padding-left: 1.1rem; color: var(--muted); line-height: 1.5; }
+    .note strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <div>
+      <h1>Макеты на согласование · клиентский сайт + admin-поддомен</h1>
+      <p>Референс визуала: centr-hirurgii.ru · без внедрения в прод · 16.09.2026</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <h3>Архитектура (как договорились)</h3>
+    <ul>
+      <li><strong>Клиентская часть</strong> — публичный сайт: услуги, врачи, запись, контакты. Отдельный UI под пациента.</li>
+      <li><strong>Админская часть</strong> — <code>admin.&lt;домен&gt;</code>: вход как раньше (<code>u_admin</code> / <code>u_registrar</code> / <code>u_doctor</code>), рабочие кабинеты.</li>
+      <li><strong>30 основных услуг</strong> — см. экран «Каталог услуг» и файл <a href="services-30.html">services-30.html</a>.</li>
+      <li><strong>Фото</strong> — сток Unsplash в папке <code>img/</code> (не с сайтов-референсов). В проде: поле <code>image_url</code> = абсолютный <code>https://…</code>; свои файлы класть в <code>/img/</code>.</li>
+    </ul>
+  </div>
+
+  <nav class="toc">
+    <a href="#home">Главная</a>
+    <a href="#services">Услуги (30)</a>
+    <a href="#service">Карточка услуги</a>
+    <a href="#doctors">Врачи</a>
+    <a href="#book">Запись</a>
+    <a href="#contacts">Контакты</a>
+    <a href="#admin-login">Admin · вход</a>
+    <a href="#admin-dash">Admin · кабинет</a>
+    <a href="services-30.html">Список 30 услуг</a>
+  </nav>
+
+  <section class="shot" id="home">
+    <header><h2>1. Главная (клиент)</h2><code>clinic.example /</code></header>
+    <div class="frame"><iframe src="pages/home.html" title="Главная" loading="lazy"></iframe></div>
+  </section>
+  <section class="shot" id="services">
+    <header><h2>2. Каталог услуг</h2><code>/services</code></header>
+    <div class="frame"><iframe src="pages/services.html" title="Услуги" loading="lazy"></iframe></div>
+  </section>
+  <section class="shot" id="service">
+    <header><h2>3. Карточка услуги</h2><code>/services/kardiologiya</code></header>
+    <div class="frame"><iframe src="pages/service.html" title="Услуга" loading="lazy"></iframe></div>
+  </section>
+  <section class="shot" id="doctors">
+    <header><h2>4. Врачи</h2><code>/doctors</code></header>
+    <div class="frame"><iframe src="pages/doctors.html" title="Врачи" loading="lazy"></iframe></div>
+  </section>
+  <section class="shot" id="book">
+    <header><h2>5. Запись на приём</h2><code>/appointment</code></header>
+    <div class="frame"><iframe src="pages/appointment.html" title="Запись" loading="lazy"></iframe></div>
+  </section>
+  <section class="shot" id="contacts">
+    <header><h2>6. Контакты</h2><code>/contacts</code></header>
+    <div class="frame"><iframe src="pages/contacts.html" title="Контакты" loading="lazy"></iframe></div>
+  </section>
+  <section class="shot" id="admin-login">
+    <header><h2>7. Admin · вход</h2><code>admin.clinic.example/login</code></header>
+    <div class="frame"><iframe src="pages/admin-login.html" title="Admin login" loading="lazy"></iframe></div>
+  </section>
+  <section class="shot" id="admin-dash">
+    <header><h2>8. Admin · кабинет (после входа)</h2><code>admin.clinic.example/</code></header>
+    <div class="frame"><iframe src="pages/admin-dashboard.html" title="Admin dashboard" loading="lazy"></iframe></div>
+  </section>
+</body>
+</html>

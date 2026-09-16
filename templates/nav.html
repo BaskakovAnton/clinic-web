@@ -15,6 +15,8 @@
     <nav class="nav">
       {{if eq .Session.Role "admin"}}
         <a href="/admin" {{if eq .Active "admin"}}class="is-active"{{end}}>Дашборд</a>
+        <a href="/admin/site-requests" {{if eq .Active "site_requests"}}class="is-active"{{end}}>Заявки</a>
+        <a href="/admin/site-services" {{if eq .Active "site_services"}}class="is-active"{{end}}>Услуги сайта</a>
         <a href="/admin/staff" {{if eq .Active "staff"}}class="is-active"{{end}}>Персонал</a>
         <a href="/admin/mass-slots" {{if eq .Active "mass"}}class="is-active"{{end}}>Слоты</a>
         <a href="/admin/roles" {{if eq .Active "roles"}}class="is-active"{{end}}>Роли</a>
@@ -33,6 +35,7 @@
       {{end}}
     </nav>
     <div class="user-meta">
+      <a href="/" class="user-chip" title="Публичный сайт">Сайт</a>
       <span class="user-chip">{{.Session.Login}}</span>
       <form action="/logout" method="post" class="logout-form">
         <button type="submit" class="secondary btn-logout">Выйти</button>

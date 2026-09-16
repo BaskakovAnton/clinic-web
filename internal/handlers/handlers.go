@@ -48,6 +48,10 @@ type pageData struct {
 	Preferential  []store.PreferentialRow
 	Stats         store.DashboardStats
 	Form          map[string]string
+	Services      []store.PublicService
+	Service       store.PublicService
+	Requests      []store.AppointmentRequest
+	NewRequests   int
 }
 
 func (s *Server) render(w http.ResponseWriter, name string, data pageData) {

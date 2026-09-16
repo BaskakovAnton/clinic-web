@@ -1,0 +1,35 @@
+{{define "public_doctors.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/public.css">
+</head>
+<body>
+  {{template "public_nav" .}}
+  <div class="wrap page-title">
+    <div class="crumbs"><a href="/">Главная</a> / Врачи</div>
+    <h1>Специалисты</h1>
+    <p class="lead">Запись к врачу онлайн.</p>
+  </div>
+  <section class="section" style="padding-top:.5rem">
+    <div class="wrap grid-3">
+      {{range $i, $d := .Doctors}}
+      <div class="card doctor">
+        <img class="avatar" src="{{doctorPhoto $i}}" alt="">
+        <div>
+          <span class="badge">{{if $d.Specialty.Valid}}{{$d.Specialty.String}}{{else}}Врач{{end}}</span>
+          <h3 style="margin:.4rem 0">{{$d.FullName}}</h3>
+          <a class="btn btn-primary" style="margin-top:.75rem;padding:.55rem .9rem" href="/appointment">Записаться</a>
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </section>
+  {{template "public_footer" .}}
+</body>
+</html>
+{{end}}

@@ -34,6 +34,10 @@
     </div>
 
     <div class="stats">
+      <a class="stat" href="/admin/site-requests">
+        <div class="stat-value">{{.NewRequests}}</div>
+        <div class="stat-label">Новые заявки с сайта</div>
+      </a>
       <a class="stat" href="/registrar/patients">
         <div class="stat-value">{{.Stats.Patients}}</div>
         <div class="stat-label">Пациенты</div>
@@ -65,9 +69,12 @@
     </div>
 
     <div class="quick-links">
+      <a href="/admin/site-services">Услуги сайта</a>
+      <a href="/admin/site-requests">Заявки</a>
+      <a href="/">Публичный сайт</a>
       <a href="/registrar/patients">Пациенты</a>
-      <a href="/registrar/schedule?date=2026-09-10">Расписание 10.09</a>
-      <a href="/doctor/day?date=2026-09-10">День врача</a>
+      <a href="/registrar/schedule">Расписание</a>
+      <a href="/doctor/day">День врача</a>
     </div>
   </main>
 </body>

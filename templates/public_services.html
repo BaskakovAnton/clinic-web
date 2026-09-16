@@ -1,0 +1,37 @@
+{{define "public_services.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/public.css">
+</head>
+<body>
+  {{template "public_nav" .}}
+  <div class="wrap page-title">
+    <div class="crumbs"><a href="/">Главная</a> / Услуги</div>
+    <h1>Основные направления</h1>
+    <p class="lead">Каталог услуг клиники.</p>
+  </div>
+  <section class="section" style="padding-top:.5rem">
+    <div class="wrap">
+      <div class="grid-3">
+        {{range .Services}}
+        <a class="card" href="/services/{{.Slug}}">
+          <img class="card-photo" src="{{.ImageURL}}" alt="">
+          <h3>{{.Title}}</h3>
+          <p>{{.Summary}}</p>
+          <div class="more">Подробнее →</div>
+        </a>
+        {{else}}
+        <p>Услуги пока не опубликованы.</p>
+        {{end}}
+      </div>
+    </div>
+  </section>
+  {{template "public_footer" .}}
+</body>
+</html>
+{{end}}

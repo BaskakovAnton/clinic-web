@@ -18,8 +18,10 @@ func (s *Server) AdminDashboard(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	newReq, _ := s.Store.CountAppointmentRequestsByStatus(r.Context(), "new")
 	s.render(w, "admin_dashboard.html", pageData{
 		Title: "Админ", Active: "admin", Session: sess, Stats: stats,
+		NewRequests: newReq,
 		Flash: flashOK(r), FlashError: flashErr(r),
 	})
 }

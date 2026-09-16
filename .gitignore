@@ -4,6 +4,8 @@
 *.so
 *.dylib
 clinic
+bin/
+*.rar
 
 # Зависимости
 vendor/

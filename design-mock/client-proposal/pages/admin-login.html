@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · вход</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/mock.css">
+</head>
+<body>
+  <div class="login-layout">
+    <div class="login-side" style="--login-image:url('../img/hero.jpg')">
+      <div class="subdomain" style="width:fit-content;background:rgba(255,255,255,.15);color:#fff">admin.clinic.example</div>
+      <h1>Кабинет персонала</h1>
+      <p>Вход как раньше: роли u_admin, u_registrar, u_doctor. Клиентский сайт — на основном домене.</p>
+    </div>
+    <div class="login-box">
+      <form class="login-card" action="admin-dashboard.html" method="get">
+        <p class="eyebrow">Staff login</p>
+        <h2>Вход в систему</h2>
+        <p class="hint">Логин и пароль учебных ролей Postgres (как в текущем веб-приложении).</p>
+        <label>Логин</label>
+        <input name="login" value="u_admin" autocomplete="username">
+        <label>Пароль</label>
+        <input name="password" type="password" value="ClinicDemo1!" autocomplete="current-password">
+        <button class="btn btn-primary btn-wide" type="submit">Войти</button>
+        <p class="hint" style="margin-top:1rem;margin-bottom:0">Пациентам: <a href="home.html">открыть публичный сайт</a></p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

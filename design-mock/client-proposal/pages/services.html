@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Услуги — 30 направлений</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/mock.css">
+</head>
+<body>
+  <div class="topstrip"><div class="wrap"><span>Каталог услуг · клиентский сайт</span><a href="appointment.html">Записаться онлайн</a></div></div>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="home.html"><div class="brand-mark">К</div><div><strong>Клиника</strong><span>Медицинский центр</span></div></a>
+      <nav class="nav">
+        <a href="services.html">Услуги</a>
+        <a href="doctors.html">Врачи</a>
+        <a href="appointment.html">Запись</a>
+        <a href="contacts.html">Контакты</a>
+      </nav>
+      <div class="header-cta">
+        <a class="phone" href="tel:+74950000000">+7 (495) 000-00-00</a>
+        <a class="btn btn-primary" href="appointment.html">Записаться</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap page-title">
+    <div class="crumbs"><a href="home.html">Главная</a> / Услуги</div>
+    <h1>Основные направления</h1>
+    <p class="lead">30 услуг для публичного каталога. Полный прайс лаборатории — отдельно, по запросу.</p>
+  </div>
+
+  <section class="section" style="padding-top:.5rem">
+    <div class="wrap">
+      <div class="grid-3" id="list"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div><h4>Клиника</h4><p>Макет каталога услуг.</p></div>
+      <div><h4>Пациентам</h4><ul><li><a href="appointment.html">Запись</a></li></ul></div>
+      <div><h4>Персонал</h4><ul><li><a href="admin-login.html">Admin</a></li></ul></div>
+    </div>
+  </footer>
+
+  <script>
+    // image_url как в будущей админке: абсолютный https в проде;
+    // в макете — локальные файлы из /img/ (относительно pages/)
+    const placeholder = "../img/service-placeholder.jpg";
+    const byKey = {
+      "Check-up": "../img/service-checkup.jpg",
+      "Кардиология": "../img/service-cardio.jpg",
+      "Неврология": "../img/service-neuro.jpg",
+      "Гастроэнтерология": "../img/service-gastro.jpg",
+      "Флебология": "../img/service-phleb.jpg",
+      "УЗИ": "../img/service-uzi.jpg",
+      "КТ": "../img/service-mri.jpg",
+      "МРТ": "../img/service-mri.jpg",
+      "Лаборатория": "../img/service-lab.jpg",
+      "Эндоскопия": "../img/service-gastro.jpg",
+      "Стоматология терапия": "../img/service-dental.jpg",
+      "Эстетика улыбки": "../img/service-dental.jpg",
+      "Имплантация": "../img/service-dental.jpg",
+      "Амбулаторная хирургия": "../img/service-surgery.jpg",
+      "Абдоминальная хирургия": "../img/service-surgery.jpg",
+      "Оперативная гинекология": "../img/service-surgery.jpg",
+      "Оперативная урология": "../img/service-surgery.jpg",
+      "Дневной стационар": "../img/service-checkup.jpg",
+      "Телемедицина": "../img/service-checkup.jpg",
+      "Помощь на дому": "../img/service-phleb.jpg"
+    };
+    const services = [
+      ["Терапия","Первичный приём и маршрутизация"],
+      ["Check-up","Комплексные программы обследования"],
+      ["Кардиология","Сердце и сосуды"],
+      ["Неврология","Боль, сон, когнитивные нарушения"],
+      ["Эндокринология","Щитовидная железа, диабет, вес"],
+      ["Гастроэнтерология","ЖКТ и микробиота"],
+      ["Гинекология","Женское здоровье и акушерство"],
+      ["Урология","Мочевыделительная система"],
+      ["ЛОР","Ухо, горло, нос"],
+      ["Офтальмология","Диагностика зрения"],
+      ["Травматология и ортопедия","Суставы и позвоночник"],
+      ["Аллергология","Иммунитет и аллергены"],
+      ["Флебология","Вены, ЭВЛК, эстетика"],
+      ["УЗИ","Экспертная ультразвуковая диагностика"],
+      ["КТ","Компьютерная томография"],
+      ["МРТ","Магнитно-резонансная томография"],
+      ["Лаборатория","Анализы и панели"],
+      ["Эндоскопия","ФГДС и колоноскопия"],
+      ["Дневной стационар","IV-терапия и наблюдение"],
+      ["Косметология","Аппаратная и инъекционная"],
+      ["Стоматология терапия","Лечение и гигиена"],
+      ["Эстетика улыбки","Виниры, отбеливание"],
+      ["Имплантация","Импланты и протезирование"],
+      ["Массаж / реабилитация","Восстановительная медицина"],
+      ["Амбулаторная хирургия","Операции одного дня"],
+      ["Абдоминальная хирургия","Плановые операции"],
+      ["Оперативная гинекология","Малоинвазивные вмешательства"],
+      ["Оперативная урология","Хирургия урологии"],
+      ["Помощь на дому","Выезд медсестры / врача"],
+      ["Телемедицина","Онлайн-консультации"]
+    ];
+    document.getElementById("list").innerHTML = services.map(([t,d]) => {
+      const src = byKey[t] || placeholder;
+      return `
+      <a class="card" href="service.html" data-image-url="${src}">
+        <img class="card-photo" src="${src}" alt="">
+        <h3>${t}</h3>
+        <p>${d}</p>
+        <div class="more">Подробнее →</div>
+      </a>`;
+    }).join("");
+  </script>
+</body>
+</html>

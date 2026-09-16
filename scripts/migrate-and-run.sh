@@ -29,6 +29,12 @@ if [ "${AUTO_MIGRATE}" = "true" ] || [ "${AUTO_MIGRATE}" = "1" ]; then
   # Always ensure connect + passwords (idempotent)
   echo "Ensuring Amvera login grants..."
   psql "$MIG_URL" -v ON_ERROR_STOP=1 -f /app/sborka/06_amvera_bootstrap.sql
+
+  # Public site catalog (idempotent)
+  if [ -f /app/sborka/07_public_site.sql ]; then
+    echo "Ensuring public site tables..."
+    psql "$MIG_URL" -v ON_ERROR_STOP=1 -f /app/sborka/07_public_site.sql
+  fi
 fi
 
 exec /app/clinic

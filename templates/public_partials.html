@@ -1,0 +1,53 @@
+{{define "public_nav"}}
+<div class="topstrip">
+  <div class="wrap">
+    <span>Круглосуточная запись · плановая и экстренная помощь</span>
+    <a href="/appointment">Записаться онлайн</a>
+  </div>
+</div>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <div class="brand-mark">К</div>
+      <div><strong>Клиника</strong><span>Медицинский центр</span></div>
+    </a>
+    <nav class="nav">
+      <a href="/services">Услуги</a>
+      <a href="/doctors">Врачи</a>
+      <a href="/appointment">Запись</a>
+      <a href="/contacts">Контакты</a>
+    </nav>
+    <div class="header-cta">
+      <a class="phone" href="tel:+74950000000">+7 (495) 000-00-00</a>
+      <a class="btn btn-primary" href="/appointment">Записаться</a>
+      <a class="btn btn-ghost" href="/login">Кабинет врача</a>
+    </div>
+  </div>
+</header>
+{{end}}
+
+{{define "public_footer"}}
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <h4>Клиника</h4>
+      <p>Многопрофильный медицинский центр. Диагностика, приём и хирургия.</p>
+    </div>
+    <div>
+      <h4>Пациентам</h4>
+      <ul>
+        <li><a href="/services">Услуги</a></li>
+        <li><a href="/doctors">Врачи</a></li>
+        <li><a href="/appointment">Запись</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Персонал</h4>
+      <ul>
+        <li><a href="/login">Вход в кабинет</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal">Имеются противопоказания. Необходима консультация специалиста.</div>
+</footer>
+{{end}}

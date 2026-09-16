@@ -1,0 +1,18 @@
+# Фото макета (сток Unsplash, не с сайтов-референсов)
+# В проде: абсолютный https://<домен>/img/<file>
+# Свои файлы класть сюда; в админке вставлять полный URL.
+
+hero.jpg                  — главная / admin login фон
+service-placeholder.jpg   — заглушка услуги по умолчанию
+service-cardio.jpg
+service-gastro.jpg
+service-surgery.jpg
+service-uzi.jpg
+service-dental.jpg
+service-checkup.jpg
+service-lab.jpg
+service-neuro.jpg
+service-mri.jpg
+service-phleb.jpg
+doctor-01.jpg … doctor-06.jpg
+contacts-map.jpg

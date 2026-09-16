@@ -40,10 +40,20 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	mux.HandleFunc("GET /healthz", srv.Healthz)
+
+	// Public client site (no auth)
+	mux.HandleFunc("GET /{$}", srv.PublicHome)
+	mux.HandleFunc("GET /services", srv.PublicServices)
+	mux.HandleFunc("GET /services/{slug}", srv.PublicService)
+	mux.HandleFunc("GET /doctors", srv.PublicDoctors)
+	mux.HandleFunc("GET /contacts", srv.PublicContacts)
+	mux.HandleFunc("GET /appointment", srv.PublicAppointmentGet)
+	mux.HandleFunc("POST /appointment", srv.PublicAppointmentPost)
+
 	mux.HandleFunc("GET /login", srv.LoginGet)
 	mux.HandleFunc("POST /login", srv.LoginPost)
 	mux.Handle("POST /logout", authMgr.RequireAuth(http.HandlerFunc(srv.Logout)))
-	mux.Handle("GET /{$}", authMgr.RequireAuth(http.HandlerFunc(srv.Home)))
+	mux.Handle("GET /app", authMgr.RequireAuth(http.HandlerFunc(srv.Home)))
 
 	reg := auth.RequireRoles(auth.RoleRegistrar, auth.RoleAdmin)
 	doc := auth.RequireRoles(auth.RoleDoctor, auth.RoleAdmin)
@@ -88,8 +98,13 @@ func main() {
 	mux.Handle("POST /admin/staff/{id}/delete", authN(adm(http.HandlerFunc(srv.AdminStaffDelete))))
 	mux.Handle("GET /admin/mass-slots", authN(adm(http.HandlerFunc(srv.AdminMassSlots))))
 	mux.Handle("POST /admin/mass-slots", authN(adm(http.HandlerFunc(srv.AdminMassSlotsCreate))))
+	mux.Handle("GET /admin/site-services", authN(adm(http.HandlerFunc(srv.AdminSiteServices))))
+	mux.Handle("GET /admin/site-services/{id}/edit", authN(adm(http.HandlerFunc(srv.AdminSiteServiceEditGet))))
+	mux.Handle("POST /admin/site-services/{id}", authN(adm(http.HandlerFunc(srv.AdminSiteServiceEditPost))))
+	mux.Handle("GET /admin/site-requests", authN(adm(http.HandlerFunc(srv.AdminSiteRequests))))
+	mux.Handle("POST /admin/site-requests/{id}/status", authN(adm(http.HandlerFunc(srv.AdminSiteRequestStatusPost))))
 
 	addr := "0.0.0.0:" + cfg.Port
-	log.Printf("Сервер запущен на http://%s", addr)
+	log.Printf("Сервер запущен на http://%s (публичный сайт + /login для персонала)", addr)
 	log.Fatal(http.ListenAndServe(addr, mux))
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · кабинет</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/mock.css">
+</head>
+<body class="admin-body">
+  <div class="admin-top">
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <div class="brand-mark" style="width:34px;height:34px;font-size:.8rem">К</div>
+      <div>
+        <strong>Admin · Клиника</strong>
+        <div style="font-size:.78rem;color:var(--muted)">admin.clinic.example · роль: администратор</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:.5rem;align-items:center">
+      <span class="badge">u_admin</span>
+      <a class="btn btn-ghost" style="padding:.45rem .75rem" href="admin-login.html">Выйти</a>
+    </div>
+  </div>
+  <div class="admin-shell">
+    <nav class="admin-nav">
+      <a class="is-on" href="#">Дашборд</a>
+      <a href="#">Персонал</a>
+      <a href="#">Пациенты</a>
+      <a href="#">Расписание</a>
+      <a href="#">Слоты</a>
+      <a href="#">Отчёты</a>
+      <a href="home.html" style="margin-top:1rem;opacity:.75">← Публичный сайт</a>
+    </nav>
+    <main class="admin-main">
+      <h1 style="margin:0 0 1rem;font-size:1.35rem">Обзор</h1>
+      <div class="kpi">
+        <div class="card"><span style="color:var(--muted);font-size:.85rem">Пациенты</span><b>3</b></div>
+        <div class="card"><span style="color:var(--muted);font-size:.85rem">Слоты сегодня</span><b>7</b></div>
+        <div class="card"><span style="color:var(--muted);font-size:.85rem">Визиты</span><b>3</b></div>
+        <div class="card"><span style="color:var(--muted);font-size:.85rem">Заявки с сайта</span><b>2</b></div>
+      </div>
+      <div class="panel" style="padding:0;overflow:auto">
+        <table>
+          <thead>
+            <tr><th>Время</th><th>Пациент</th><th>Врач</th><th>Статус</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr><td>10:00</td><td>Петров А.</td><td>Попова К. М.</td><td>booked</td><td><a href="#">Открыть</a></td></tr>
+            <tr><td>10:30</td><td>—</td><td>Воронова Ю. О.</td><td>free</td><td><a href="#">Записать</a></td></tr>
+            <tr><td>11:00</td><td>Сидорова М.</td><td>Овсянникова Т. А.</td><td>visit</td><td><a href="#">Карта</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="color:var(--muted);font-size:.88rem;margin:1rem 0 0">Макет admin-поддомена: та же логика ролей, что в текущем Go SSR. Визуал можно позже сблизить с рабочим UI.</p>
+    </main>
+  </div>
+</body>
+</html>

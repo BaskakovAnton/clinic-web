@@ -1,0 +1,83 @@
+{{define "public_home.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/public.css">
+</head>
+<body>
+  {{template "public_nav" .}}
+  <section class="hero" style="--hero-image:url('/static/img/hero.jpg')">
+    <div class="wrap">
+      <h1>Комплексная медицинская помощь в одном центре</h1>
+      <p>Диагностика, приём специалистов, дневной стационар и хирургические направления.</p>
+      <div class="hero-actions">
+        <a class="btn btn-accent" href="/appointment">Записаться на приём</a>
+        <a class="btn btn-ghost" href="/services" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)">Смотреть услуги</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>30</b><span>основных направлений</span></div>
+        <div><b>24/7</b><span>запись и консультация</span></div>
+        <div><b>1 день</b><span>предоперационная подготовка</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <div class="triggers">
+      <div class="trigger"><b>Бесплатная консультация</b><span>по вопросу операции и плана лечения</span></div>
+      <div class="trigger"><b>Точная диагностика</b><span>УЗИ, КТ, МРТ, лаборатория</span></div>
+      <div class="trigger"><b>Малоинвазивные методы</b><span>амбулаторная и стационарная хирургия</span></div>
+      <div class="trigger"><b>Наблюдение после</b><span>дневной стационар и реабилитация</span></div>
+    </div>
+  </div>
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Основные направления</h2>
+          <p class="lead">Избранные услуги клиники.</p>
+        </div>
+        <a class="btn btn-ghost" href="/services">Все услуги</a>
+      </div>
+      <div class="grid-3">
+        {{range .Services}}
+        <a class="card" href="/services/{{.Slug}}">
+          <img class="card-photo" src="{{.ImageURL}}" alt="">
+          <h3>{{.Title}}</h3>
+          <p>{{.Summary}}</p>
+          <div class="more">Подробнее →</div>
+        </a>
+        {{end}}
+      </div>
+    </div>
+  </section>
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Ведущие специалисты</h2>
+          <p class="lead">Запись к врачам онлайн.</p>
+        </div>
+        <a class="btn btn-ghost" href="/doctors">Все врачи</a>
+      </div>
+      <div class="grid-3">
+        {{range $i, $d := .Doctors}}
+        <div class="card doctor">
+          <img class="avatar" src="{{doctorPhoto $i}}" alt="">
+          <div>
+            <span class="badge">{{if $d.Specialty.Valid}}{{$d.Specialty.String}}{{else}}Врач{{end}}</span>
+            <h3 style="margin:.4rem 0">{{$d.FullName}}</h3>
+            <a class="btn btn-primary" style="margin-top:.75rem;padding:.55rem .9rem" href="/appointment">Записаться</a>
+          </div>
+        </div>
+        {{end}}
+      </div>
+    </div>
+  </section>
+  {{template "public_footer" .}}
+</body>
+</html>
+{{end}}

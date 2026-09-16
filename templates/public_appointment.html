@@ -1,0 +1,73 @@
+{{define "public_appointment.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/public.css">
+</head>
+<body>
+  {{template "public_nav" .}}
+  <div class="wrap page-title">
+    <div class="crumbs"><a href="/">Главная</a> / Запись</div>
+    <h1>Запись на приём</h1>
+    <p class="lead">Заявка предварительная — администратор подтвердит время.</p>
+  </div>
+  <section class="section" style="padding-top:.25rem">
+    <div class="wrap split">
+      <form class="panel" method="post" action="/appointment">
+        {{if .Flash}}<div class="flash" style="background:#e8f7ef;border:1px solid #b7e0c7;padding:.75rem;border-radius:8px;margin-bottom:1rem">{{.Flash}}</div>{{end}}
+        {{if .FlashError}}<div class="flash" style="background:#fdecea;border:1px solid #f0c2bc;padding:.75rem;border-radius:8px;margin-bottom:1rem">{{.FlashError}}</div>{{end}}
+        <div class="form-grid">
+          <div>
+            <label>Имя</label>
+            <input name="full_name" required placeholder="Как к вам обращаться">
+          </div>
+          <div>
+            <label>Телефон</label>
+            <input name="phone" type="tel" required placeholder="+7 (___) ___-__-__">
+          </div>
+        </div>
+        <label>Направление / услуга</label>
+        <select name="service_slug">
+          <option value="">Не выбрано</option>
+          {{range .Services}}
+          <option value="{{.Slug}}" {{if eq $.Form.service_slug .Slug}}selected{{end}}>{{.Title}}</option>
+          {{end}}
+        </select>
+        <div class="form-grid">
+          <div>
+            <label>Желаемая дата</label>
+            <input type="date" name="preferred_date">
+          </div>
+          <div>
+            <label>Врач (необязательно)</label>
+            <select name="doctor_note">
+              <option value="">Любой свободный</option>
+              {{range .Doctors}}
+              <option value="{{.FullName}}">{{.FullName}}</option>
+              {{end}}
+            </select>
+          </div>
+        </div>
+        <label>Комментарий</label>
+        <textarea name="comment" rows="3" placeholder="Жалобы, удобное время…"></textarea>
+        <button class="btn btn-accent btn-wide" type="submit">Отправить заявку</button>
+        <p style="margin:.75rem 0 0;font-size:.82rem;color:var(--muted)">Отправляя заявку, вы соглашаетесь на обработку персональных данных.</p>
+      </form>
+      <aside class="panel">
+        <h2 style="margin:0 0 .5rem;font-size:1.15rem">Как это работает</h2>
+        <ul class="list-check">
+          <li>Оставляете заявку на сайте</li>
+          <li>Администратор звонит и подтверждает слот</li>
+          <li>Запись появляется в кабинете персонала</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+  {{template "public_footer" .}}
+</body>
+</html>
+{{end}}

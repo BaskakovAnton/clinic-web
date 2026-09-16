@@ -1,0 +1,40 @@
+{{define "public_service.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Service.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/public.css">
+</head>
+<body>
+  {{template "public_nav" .}}
+  <div class="wrap page-title">
+    <div class="crumbs"><a href="/">Главная</a> / <a href="/services">Услуги</a> / {{.Service.Title}}</div>
+    <h1>{{.Service.Title}}</h1>
+    <p class="lead">{{.Service.Summary}}</p>
+  </div>
+  <section class="section" style="padding-top:.25rem">
+    <div class="wrap split">
+      <div class="panel">
+        <img class="service-cover" src="{{.Service.ImageURL}}" alt="{{.Service.Title}}">
+        <h2 style="margin-top:0;font-size:1.2rem">Описание</h2>
+        <p style="color:var(--muted);margin:0;white-space:pre-wrap">{{.Service.Body}}</p>
+      </div>
+      <aside class="panel">
+        {{if .Service.PriceFrom.Valid}}
+        <div class="subdomain" style="background:var(--blue-soft);color:var(--blue-deep)">от {{.Service.PriceFrom.Int64}} ₽</div>
+        {{end}}
+        <div class="price">{{.Service.Title}}</div>
+        <p style="color:var(--muted);font-size:.9rem">Запись через администратора клиники.</p>
+        <a class="btn btn-accent btn-wide" href="/appointment?service={{.Service.Slug}}">Записаться</a>
+        <a class="btn btn-ghost btn-wide" style="margin-top:.5rem" href="/doctors">Выбрать врача</a>
+        <p style="margin:1rem 0 0;font-size:.82rem;color:var(--muted)">Имеются противопоказания. Нужна консультация специалиста.</p>
+      </aside>
+    </div>
+  </section>
+  {{template "public_footer" .}}
+</body>
+</html>
+{{end}}

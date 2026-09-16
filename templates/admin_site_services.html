@@ -1,0 +1,43 @@
+{{define "admin_site_services.html"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} · Клиника</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  {{template "nav" .}}
+  <main>
+    {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
+    <div class="page-head">
+      <h1>Услуги сайта</h1>
+      <p>Каталог публичного сайта. Поле image_url — абсолютный https://… или /static/img/…</p>
+    </div>
+    <div class="panel" style="overflow:auto">
+      <table>
+        <thead>
+          <tr><th></th><th>Название</th><th>Slug</th><th>Цена от</th><th>На главной</th><th>Публ.</th><th></th></tr>
+        </thead>
+        <tbody>
+          {{range .Services}}
+          <tr>
+            <td><img src="{{.ImageURL}}" alt="" style="width:56px;height:40px;object-fit:cover;border-radius:6px"></td>
+            <td>{{.Title}}</td>
+            <td><code>{{.Slug}}</code></td>
+            <td>{{if .PriceFrom.Valid}}{{.PriceFrom.Int64}} ₽{{else}}—{{end}}</td>
+            <td>{{if .IsFeatured}}да{{else}}—{{end}}</td>
+            <td>{{if .IsPublished}}да{{else}}нет{{end}}</td>
+            <td><a href="/admin/site-services/{{.ID}}/edit">Изменить</a></td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>
+{{end}}
