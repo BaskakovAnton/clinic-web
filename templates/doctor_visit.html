@@ -37,9 +37,9 @@
           <div>
             <label>Тип</label>
             <select name="order_kind">
-              <option value="medication" {{if eq .OrderKind "medication"}}selected{{end}}>medication</option>
-              <option value="procedure" {{if eq .OrderKind "procedure"}}selected{{end}}>procedure</option>
-              <option value="test" {{if eq .OrderKind "test"}}selected{{end}}>test</option>
+              <option value="medication" {{if eq .OrderKind "medication"}}selected{{end}}>лекарство</option>
+              <option value="procedure" {{if eq .OrderKind "procedure"}}selected{{end}}>процедура</option>
+              <option value="test" {{if eq .OrderKind "test"}}selected{{end}}>анализ</option>
             </select>
           </div>
           <div><label>Описание</label><input name="order_description" value="{{.Description}}"></div>
@@ -60,9 +60,9 @@
           <div>
             <label>Тип</label>
             <select name="order_kind" required>
-              <option value="medication">medication</option>
-              <option value="procedure">procedure</option>
-              <option value="test">test</option>
+              <option value="medication">лекарство</option>
+              <option value="procedure">процедура</option>
+              <option value="test">анализ</option>
             </select>
           </div>
           <div><label>Описание</label><input name="order_description" required></div>

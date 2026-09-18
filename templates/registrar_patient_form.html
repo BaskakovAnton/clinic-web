@@ -27,8 +27,8 @@
           <div><label>Дата рождения *</label><input type="date" name="birth_date" required value="{{index .Form "birth_date"}}"></div>
           <div><label>Тип полиса *</label>
             <select name="insurance_type">
-              <option value="OMS" {{if eq (index .Form "insurance_type") "OMS"}}selected{{end}}>OMS</option>
-              <option value="DMS" {{if eq (index .Form "insurance_type") "DMS"}}selected{{end}}>DMS</option>
+              <option value="OMS" {{if eq (index .Form "insurance_type") "OMS"}}selected{{end}}>ОМС</option>
+              <option value="DMS" {{if eq (index .Form "insurance_type") "DMS"}}selected{{end}}>ДМС</option>
             </select>
           </div>
           <div><label>Номер полиса *</label><input name="insurance_number" required value="{{index .Form "insurance_number"}}"></div>

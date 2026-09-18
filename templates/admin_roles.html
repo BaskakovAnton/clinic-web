@@ -13,26 +13,25 @@
 <body>
   {{template "nav" .}}
   <main>
-    <h1>Роли доступа (зеркало 03_roles.sql)</h1>
+    <h1>Роли доступа</h1>
     <div class="panel">
       <table>
-        <thead><tr><th>Роль</th><th>Логин</th><th>Что можно</th></tr></thead>
+        <thead><tr><th>Роль</th><th>Что можно в кабинете</th></tr></thead>
         <tbody>
           <tr>
-            <td>clinic_admin</td><td>u_admin</td>
-            <td>Полный доступ к таблицам/последовательностям; персонал; массовые слоты; все экраны морды</td>
+            <td>Администратор</td>
+            <td>Персонал, услуги и заявки сайта, массовые слоты, все разделы кабинета</td>
           </tr>
           <tr>
-            <td>clinic_registrar</td><td>u_registrar</td>
-            <td>patients R/W; appointments R/W; staff SELECT; VIEW свободных слотов и нагрузки</td>
+            <td>Регистратура</td>
+            <td>Пациенты, запись на приём, свободные слоты, расписание</td>
           </tr>
           <tr>
-            <td>clinic_doctor</td><td>u_doctor</td>
-            <td>patients/staff/appointments SELECT; visits и visit_orders R/W; все 4 VIEW</td>
+            <td>Врач</td>
+            <td>Свой день и расписание, медкарты, визиты и назначения, отчёты</td>
           </tr>
         </tbody>
       </table>
-      <p class="muted">В морде пул БД — широкий пользователь; проверка роли в сессии. На защите дополнительно показать GRANT в pgAdmin под u_*.</p>
     </div>
   </main>
 </body>

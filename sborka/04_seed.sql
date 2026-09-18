@@ -8,7 +8,7 @@ BEGIN;
 TRUNCATE visit_orders, visits, appointments, patients, staff
     RESTART IDENTITY CASCADE;
 
--- Сотрудники
+-- Сотрудники (пол/фото — в staff_photo, см. 08_staff_photo.sql)
 INSERT INTO staff (full_name, staff_kind, specialty, department, work_schedule, office)
 VALUES
     ('Иванова Анна Сергеевна',  'doctor', 'терапевт',  'Терапевтическое', 'Пн–Пт 09:00–15:00', '101'),

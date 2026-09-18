@@ -126,6 +126,7 @@ func staffFromForm(r *http.Request) (store.StaffInput, string) {
 	if err := r.ParseForm(); err != nil {
 		return store.StaffInput{}, "Ошибка формы"
 	}
+	gender := strings.TrimSpace(r.FormValue("gender"))
 	in := store.StaffInput{
 		FullName:     strings.TrimSpace(r.FormValue("full_name")),
 		StaffKind:    r.FormValue("staff_kind"),
@@ -133,6 +134,8 @@ func staffFromForm(r *http.Request) (store.StaffInput, string) {
 		Department:   strings.TrimSpace(r.FormValue("department")),
 		WorkSchedule: strings.TrimSpace(r.FormValue("work_schedule")),
 		Office:       strings.TrimSpace(r.FormValue("office")),
+		Gender:       gender,
+		ImageURL:     strings.TrimSpace(r.FormValue("image_url")),
 	}
 	if in.FullName == "" || in.Department == "" {
 		return in, "ФИО и отделение обязательны"
@@ -143,12 +146,16 @@ func staffFromForm(r *http.Request) (store.StaffInput, string) {
 	if in.StaffKind == "doctor" && in.Specialty == "" {
 		return in, "У врача нужна специальность"
 	}
+	if gender != "" && gender != "f" && gender != "m" {
+		return in, "Пол: ж (f) или м (m)"
+	}
 	return in, ""
 }
 
 func staffToForm(st store.Staff) map[string]string {
 	m := map[string]string{
 		"full_name": st.FullName, "staff_kind": st.StaffKind, "department": st.Department,
+		"image_url": st.ImageURL,
 	}
 	if st.Specialty.Valid {
 		m["specialty"] = st.Specialty.String
@@ -158,6 +165,9 @@ func staffToForm(st store.Staff) map[string]string {
 	}
 	if st.Office.Valid {
 		m["office"] = st.Office.String
+	}
+	if st.Gender.Valid {
+		m["gender"] = st.Gender.String
 	}
 	return m
 }

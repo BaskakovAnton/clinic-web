@@ -16,7 +16,7 @@
     {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
     {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
     <h1>{{.Patient.FullName}}</h1>
-    <p class="muted">Карта {{.Patient.CardNumber}} · {{.Patient.InsuranceType}} {{.Patient.InsuranceNumber}}</p>
+    <p class="muted">Карта {{.Patient.CardNumber}} · {{if eq .Patient.InsuranceType "OMS"}}ОМС{{else if eq .Patient.InsuranceType "DMS"}}ДМС{{else}}{{.Patient.InsuranceType}}{{end}} {{.Patient.InsuranceNumber}}</p>
     <div class="panel">
       <p>Дата рождения: {{.Patient.BirthDate.Format "02.01.2006"}}</p>
       <p>Паспорт: {{.Patient.PassportData}}</p>

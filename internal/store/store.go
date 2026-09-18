@@ -62,6 +62,8 @@ type Doctor struct {
 	ID        int
 	FullName  string
 	Specialty sql.NullString
+	Gender    sql.NullString
+	ImageURL  string
 }
 
 type Staff struct {
@@ -72,6 +74,8 @@ type Staff struct {
 	Department   string
 	WorkSchedule sql.NullString
 	Office       sql.NullString
+	Gender       sql.NullString
+	ImageURL     string
 }
 
 type StaffInput struct {
@@ -81,6 +85,8 @@ type StaffInput struct {
 	Department   string
 	WorkSchedule string
 	Office       string
+	Gender       string
+	ImageURL     string
 }
 
 type CardRow struct {
@@ -480,8 +486,10 @@ func (s *Store) CreateSlotsWeek(ctx context.Context, doctorIDs []int, weekStart 
 
 func (s *Store) ListDoctors(ctx context.Context) ([]Doctor, error) {
 	rows, err := s.DB.QueryContext(ctx, `
-		SELECT id, full_name, specialty FROM staff
-		WHERE staff_kind = 'doctor' ORDER BY full_name`)
+		SELECT s.id, s.full_name, s.specialty, p.gender, COALESCE(p.image_url, '')
+		FROM staff s
+		LEFT JOIN staff_photo p ON p.staff_id = s.id
+		WHERE s.staff_kind = 'doctor' ORDER BY s.full_name`)
 	if err != nil {
 		return nil, err
 	}
@@ -489,7 +497,7 @@ func (s *Store) ListDoctors(ctx context.Context) ([]Doctor, error) {
 	var out []Doctor
 	for rows.Next() {
 		var d Doctor
-		if err := rows.Scan(&d.ID, &d.FullName, &d.Specialty); err != nil {
+		if err := rows.Scan(&d.ID, &d.FullName, &d.Specialty, &d.Gender, &d.ImageURL); err != nil {
 			return nil, err
 		}
 		out = append(out, d)
@@ -499,8 +507,11 @@ func (s *Store) ListDoctors(ctx context.Context) ([]Doctor, error) {
 
 func (s *Store) ListStaff(ctx context.Context) ([]Staff, error) {
 	rows, err := s.DB.QueryContext(ctx, `
-		SELECT id, full_name, staff_kind, specialty, department, work_schedule, office
-		FROM staff ORDER BY staff_kind, full_name`)
+		SELECT s.id, s.full_name, s.staff_kind, s.specialty, s.department, s.work_schedule, s.office,
+		       p.gender, COALESCE(p.image_url, '')
+		FROM staff s
+		LEFT JOIN staff_photo p ON p.staff_id = s.id
+		ORDER BY s.staff_kind, s.full_name`)
 	if err != nil {
 		return nil, err
 	}
@@ -508,7 +519,10 @@ func (s *Store) ListStaff(ctx context.Context) ([]Staff, error) {
 	var out []Staff
 	for rows.Next() {
 		var st Staff
-		if err := rows.Scan(&st.ID, &st.FullName, &st.StaffKind, &st.Specialty, &st.Department, &st.WorkSchedule, &st.Office); err != nil {
+		if err := rows.Scan(
+			&st.ID, &st.FullName, &st.StaffKind, &st.Specialty, &st.Department, &st.WorkSchedule, &st.Office,
+			&st.Gender, &st.ImageURL,
+		); err != nil {
 			return nil, err
 		}
 		out = append(out, st)
@@ -519,9 +533,15 @@ func (s *Store) ListStaff(ctx context.Context) ([]Staff, error) {
 func (s *Store) GetStaff(ctx context.Context, id int) (Staff, error) {
 	var st Staff
 	err := s.DB.QueryRowContext(ctx, `
-		SELECT id, full_name, staff_kind, specialty, department, work_schedule, office
-		FROM staff WHERE id = $1`, id).
-		Scan(&st.ID, &st.FullName, &st.StaffKind, &st.Specialty, &st.Department, &st.WorkSchedule, &st.Office)
+		SELECT s.id, s.full_name, s.staff_kind, s.specialty, s.department, s.work_schedule, s.office,
+		       p.gender, COALESCE(p.image_url, '')
+		FROM staff s
+		LEFT JOIN staff_photo p ON p.staff_id = s.id
+		WHERE s.id = $1`, id).
+		Scan(
+			&st.ID, &st.FullName, &st.StaffKind, &st.Specialty, &st.Department, &st.WorkSchedule, &st.Office,
+			&st.Gender, &st.ImageURL,
+		)
 	if errors.Is(err, sql.ErrNoRows) {
 		return Staff{}, ErrNotFound
 	}
@@ -536,12 +556,33 @@ func (s *Store) CreateStaff(ctx context.Context, in StaffInput) (int, error) {
 	} else {
 		spec = nil
 	}
-	err := s.DB.QueryRowContext(ctx, `
+	tx, err := s.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return 0, err
+	}
+	defer tx.Rollback()
+
+	err = tx.QueryRowContext(ctx, `
 		INSERT INTO staff (full_name, staff_kind, specialty, department, work_schedule, office)
 		VALUES ($1,$2,$3,$4,$5,$6) RETURNING id`,
 		in.FullName, in.StaffKind, spec, in.Department, nullIfEmpty(in.WorkSchedule), nullIfEmpty(in.Office),
 	).Scan(&id)
-	return id, err
+	if err != nil {
+		return 0, err
+	}
+	if _, err := tx.ExecContext(ctx, `
+		INSERT INTO staff_photo (staff_id, gender, image_url)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (staff_id) DO UPDATE
+		SET gender = EXCLUDED.gender, image_url = EXCLUDED.image_url`,
+		id, nullIfEmpty(in.Gender), in.ImageURL,
+	); err != nil {
+		return 0, err
+	}
+	if err := tx.Commit(); err != nil {
+		return 0, err
+	}
+	return id, nil
 }
 
 func (s *Store) UpdateStaff(ctx context.Context, id int, in StaffInput) error {
@@ -551,7 +592,13 @@ func (s *Store) UpdateStaff(ctx context.Context, id int, in StaffInput) error {
 	} else {
 		spec = nil
 	}
-	res, err := s.DB.ExecContext(ctx, `
+	tx, err := s.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	res, err := tx.ExecContext(ctx, `
 		UPDATE staff SET full_name=$1, staff_kind=$2, specialty=$3, department=$4, work_schedule=$5, office=$6
 		WHERE id=$7`,
 		in.FullName, in.StaffKind, spec, in.Department, nullIfEmpty(in.WorkSchedule), nullIfEmpty(in.Office), id,
@@ -563,7 +610,16 @@ func (s *Store) UpdateStaff(ctx context.Context, id int, in StaffInput) error {
 	if n == 0 {
 		return ErrNotFound
 	}
-	return nil
+	if _, err := tx.ExecContext(ctx, `
+		INSERT INTO staff_photo (staff_id, gender, image_url)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (staff_id) DO UPDATE
+		SET gender = EXCLUDED.gender, image_url = EXCLUDED.image_url`,
+		id, nullIfEmpty(in.Gender), in.ImageURL,
+	); err != nil {
+		return err
+	}
+	return tx.Commit()
 }
 
 func (s *Store) DeleteStaff(ctx context.Context, id int) error {

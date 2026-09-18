@@ -16,9 +16,9 @@
     {{if .Flash}}<div class="flash">{{.Flash}}</div>{{end}}
     {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
     <h1>{{.Patient.FullName}}</h1>
-    <p class="muted">Карта {{.Patient.CardNumber}} · {{.Patient.InsuranceType}} {{.Patient.InsuranceNumber}} · {{.Patient.BirthDate.Format "02.01.2006"}}</p>
+    <p class="muted">Карта {{.Patient.CardNumber}} · {{if eq .Patient.InsuranceType "OMS"}}ОМС{{else if eq .Patient.InsuranceType "DMS"}}ДМС{{else}}{{.Patient.InsuranceType}}{{end}} {{.Patient.InsuranceNumber}} · {{.Patient.BirthDate.Format "02.01.2006"}}</p>
 
-    <h2>История (v_patient_medical_card)</h2>
+    <h2>История</h2>
     <div class="panel">
       {{if not .CardRows}}<p class="empty">Записей пока нет</p>{{else}}
       <table>
@@ -31,7 +31,7 @@
             <td>{{if .Complaints.Valid}}{{.Complaints.String}}{{else}}—{{end}}</td>
             <td>{{if .DiagnosisICD10.Valid}}{{.DiagnosisICD10.String}}{{else}}—{{end}}</td>
             <td>
-              {{if .OrderID.Valid}}{{.OrderKind.String}}: {{.OrderDescription.String}}{{if and .IsPreferential.Valid .IsPreferential.Bool}} · льгота{{end}}{{else}}—{{end}}
+              {{if .OrderID.Valid}}{{orderKind .OrderKind.String}}: {{.OrderDescription.String}}{{if and .IsPreferential.Valid .IsPreferential.Bool}} · льгота{{end}}{{else}}—{{end}}
             </td>
             <td>{{if .VisitID.Valid}}<a href="/doctor/visits/{{.VisitID.Int64}}">визит</a>{{end}}</td>
           </tr>
@@ -53,20 +53,30 @@
               {{end}}
             </select>
           </div>
-          <div><label>МКБ-10</label><input name="diagnosis_icd10" required placeholder="G44.2"></div>
-          <div><label>appointment_id</label><input name="appointment_id" value="{{index .Form "appointment_id"}}"></div>
+          <div>
+            <label class="label-with-tip">МКБ-10
+              <span class="tip" tabindex="0" data-tip="Код диагноза по международной классификации, например G44.2">?</span>
+            </label>
+            <input name="diagnosis_icd10" required value="{{index .Form "diagnosis_icd10"}}">
+          </div>
+          <div>
+            <label class="label-with-tip">Слот записи
+              <span class="tip" tabindex="0" data-tip="Номер слота из расписания, если приём начат из записи. Можно оставить пустым.">?</span>
+            </label>
+            <input name="appointment_id" value="{{index .Form "appointment_id"}}">
+          </div>
         </div>
         <label>Жалобы</label>
-        <textarea name="complaints"></textarea>
+        <textarea name="complaints">{{index .Form "complaints"}}</textarea>
         <h2 style="margin-top:1rem">Назначение (опц.)</h2>
         <div class="form-grid">
           <div>
             <label>Тип</label>
             <select name="order_kind">
               <option value="">—</option>
-              <option value="medication">medication</option>
-              <option value="procedure">procedure</option>
-              <option value="test">test</option>
+              <option value="medication">лекарство</option>
+              <option value="procedure">процедура</option>
+              <option value="test">анализ</option>
             </select>
           </div>
           <div><label>Описание</label><input name="order_description"></div>

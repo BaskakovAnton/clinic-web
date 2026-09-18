@@ -15,19 +15,20 @@
     {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
     <div class="page-head">
       <h1>Услуги сайта</h1>
-      <p>Каталог публичного сайта. Поле image_url — абсолютный https://… или /static/img/…</p>
+      <p>Каталог услуг на публичном сайте.</p>
     </div>
-    <div class="panel" style="overflow:auto">
+    <p><a class="btn" href="/admin/site-services/new">Добавить услугу</a></p>
+    <div class="panel panel-scroll" style="overflow:auto">
       <table>
         <thead>
-          <tr><th></th><th>Название</th><th>Slug</th><th>Цена от</th><th>На главной</th><th>Публ.</th><th></th></tr>
+          <tr><th></th><th>Название</th><th>Код</th><th>Цена от</th><th>На главной</th><th>Публ.</th><th></th></tr>
         </thead>
         <tbody>
           {{range .Services}}
           <tr>
             <td><img src="{{.ImageURL}}" alt="" style="width:56px;height:40px;object-fit:cover;border-radius:6px"></td>
             <td>{{.Title}}</td>
-            <td><code>{{.Slug}}</code></td>
+            <td>{{.Slug}}</td>
             <td>{{if .PriceFrom.Valid}}{{.PriceFrom.Int64}} ₽{{else}}—{{end}}</td>
             <td>{{if .IsFeatured}}да{{else}}—{{end}}</td>
             <td>{{if .IsPublished}}да{{else}}нет{{end}}</td>

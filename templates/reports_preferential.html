@@ -14,7 +14,6 @@
   {{template "nav" .}}
   <main>
     <h1>Льготные назначения</h1>
-    <p class="muted">Данные из v_preferential_orders</p>
     <div class="panel">
       {{if not .Preferential}}
         <p class="empty">Нет льготных назначений</p>
@@ -29,7 +28,7 @@
             <td>{{.VisitAt.Format "02.01.2006 15:04"}}</td>
             <td>{{.PatientName}} ({{.CardNumber}})</td>
             <td>{{.DoctorName}}</td>
-            <td>{{.OrderKind}}</td>
+            <td>{{orderKind .OrderKind}}</td>
             <td>{{.Description}}</td>
             <td>{{if .IsPrescription}}да{{else}}нет{{end}}</td>
           </tr>

@@ -124,6 +124,31 @@ FROM public_services WHERE id = $1`, id).
 	return it, err
 }
 
+func (s *Store) CreatePublicService(ctx context.Context, in PublicServiceInput) (int, error) {
+	img := strings.TrimSpace(in.ImageURL)
+	if img == "" {
+		img = "/static/img/service-placeholder.jpg"
+	}
+	var price any
+	if in.PriceFrom != nil {
+		price = *in.PriceFrom
+	}
+	var id int
+	err := s.DB.QueryRowContext(ctx, `
+INSERT INTO public_services (slug, title, summary, body, price_from, image_url, sort_order, is_featured, is_published)
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+RETURNING id`,
+		in.Slug, in.Title, in.Summary, in.Body, price, img, in.SortOrder, in.IsFeatured, in.IsPublished,
+	).Scan(&id)
+	if err != nil {
+		if strings.Contains(strings.ToLower(err.Error()), "unique") || strings.Contains(err.Error(), "duplicate") {
+			return 0, ErrConflict
+		}
+		return 0, err
+	}
+	return id, nil
+}
+
 func (s *Store) UpsertPublicService(ctx context.Context, in PublicServiceInput) error {
 	img := strings.TrimSpace(in.ImageURL)
 	if img == "" {

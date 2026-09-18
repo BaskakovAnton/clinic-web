@@ -99,6 +99,8 @@ func main() {
 	mux.Handle("GET /admin/mass-slots", authN(adm(http.HandlerFunc(srv.AdminMassSlots))))
 	mux.Handle("POST /admin/mass-slots", authN(adm(http.HandlerFunc(srv.AdminMassSlotsCreate))))
 	mux.Handle("GET /admin/site-services", authN(adm(http.HandlerFunc(srv.AdminSiteServices))))
+	mux.Handle("GET /admin/site-services/new", authN(adm(http.HandlerFunc(srv.AdminSiteServiceNewGet))))
+	mux.Handle("POST /admin/site-services", authN(adm(http.HandlerFunc(srv.AdminSiteServiceCreatePost))))
 	mux.Handle("GET /admin/site-services/{id}/edit", authN(adm(http.HandlerFunc(srv.AdminSiteServiceEditGet))))
 	mux.Handle("POST /admin/site-services/{id}", authN(adm(http.HandlerFunc(srv.AdminSiteServiceEditPost))))
 	mux.Handle("GET /admin/site-requests", authN(adm(http.HandlerFunc(srv.AdminSiteRequests))))

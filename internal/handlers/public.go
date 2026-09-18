@@ -144,6 +144,42 @@ func (s *Server) AdminSiteServices(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (s *Server) AdminSiteServiceNewGet(w http.ResponseWriter, r *http.Request) {
+	sess, _ := auth.SessionFromContext(r.Context())
+	s.render(w, "admin_site_service_form.html", pageData{
+		Title:   "Новая услуга",
+		Active:  "site_services",
+		Session: sess,
+		Form: map[string]string{
+			"sort_order":   "0",
+			"is_published": "1",
+			"image_url":    "/static/img/service-placeholder.jpg",
+		},
+		FlashError: flashErr(r),
+	})
+}
+
+func (s *Server) AdminSiteServiceCreatePost(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		redirectErr(w, r, "/admin/site-services/new", "Ошибка формы")
+		return
+	}
+	in, err := parseServiceForm(r)
+	if err != nil {
+		redirectErr(w, r, "/admin/site-services/new", err.Error())
+		return
+	}
+	if _, err := s.Store.CreatePublicService(r.Context(), in); err != nil {
+		if errors.Is(err, store.ErrConflict) {
+			redirectErr(w, r, "/admin/site-services/new", "Услуга с таким кодом уже есть")
+			return
+		}
+		redirectErr(w, r, "/admin/site-services/new", "Не сохранено")
+		return
+	}
+	redirectOK(w, r, "/admin/site-services", "Услуга добавлена")
+}
+
 func (s *Server) AdminSiteServiceEditGet(w http.ResponseWriter, r *http.Request) {
 	sess, _ := auth.SessionFromContext(r.Context())
 	id, _ := strconv.Atoi(r.PathValue("id"))
@@ -230,21 +266,21 @@ func parseServiceForm(r *http.Request) (store.PublicServiceInput, error) {
 	slug := strings.TrimSpace(r.FormValue("slug"))
 	title := strings.TrimSpace(r.FormValue("title"))
 	if slug == "" || title == "" {
-		return store.PublicServiceInput{}, errors.New("slug и название обязательны")
+		return store.PublicServiceInput{}, errors.New("укажите код страницы и название")
 	}
 	img := strings.TrimSpace(r.FormValue("image_url"))
 	if img == "" {
 		img = "/static/img/service-placeholder.jpg"
 	}
 	if strings.HasPrefix(img, "http://") {
-		return store.PublicServiceInput{}, errors.New("используйте https:// или путь /static/img/...")
+		return store.PublicServiceInput{}, errors.New("укажите защищённую ссылку https://… или путь /static/img/…")
 	}
 	if strings.HasPrefix(img, "https://") || strings.HasPrefix(img, "/static/") {
 		// ok
 	} else if strings.HasPrefix(img, "/") {
 		// ok absolute path on same host
 	} else {
-		return store.PublicServiceInput{}, errors.New("image_url: https://… или /static/img/…")
+		return store.PublicServiceInput{}, errors.New("фото: ссылка https://… или путь /static/img/…")
 	}
 	in := store.PublicServiceInput{
 		Slug:        slug,

@@ -1,15 +1,42 @@
 package templates
 
 import (
+	"database/sql"
 	"fmt"
 	"html/template"
 	"io"
 	"path/filepath"
+	"strings"
 	"time"
+
+	"clinic/internal/store"
 )
 
 type Renderer struct {
 	t *template.Template
+}
+
+func doctorAvatarURL(d store.Doctor) string {
+	return avatarFrom(d.ImageURL, d.Gender)
+}
+
+func staffAvatarURL(st store.Staff) string {
+	return avatarFrom(st.ImageURL, st.Gender)
+}
+
+func avatarFrom(imageURL string, gender sql.NullString) string {
+	if strings.TrimSpace(imageURL) != "" {
+		return imageURL
+	}
+	if gender.Valid {
+		switch gender.String {
+		case "f":
+			return "/static/img/doctor-placeholder-f.jpg"
+		case "m":
+			return "/static/img/doctor-placeholder-m.jpg"
+		}
+	}
+	return "/static/img/doctor-placeholder.jpg"
 }
 
 func New(dir string) (*Renderer, error) {
@@ -33,9 +60,33 @@ func New(dir string) (*Renderer, error) {
 			}
 			return t.AddDate(0, 0, days).Format("2006-01-02")
 		},
-		"doctorPhoto": func(i int) string {
-			n := (i % 6) + 1
-			return fmt.Sprintf("/static/img/doctor-%02d.jpg", n)
+		"doctorAvatar": doctorAvatarURL,
+		"staffAvatar":  staffAvatarURL,
+		"orderKind": func(kind string) string {
+			switch kind {
+			case "medication":
+				return "лекарство"
+			case "procedure":
+				return "процедура"
+			case "test":
+				return "анализ"
+			default:
+				return kind
+			}
+		},
+		"requestStatus": func(status string) string {
+			switch status {
+			case "new":
+				return "новая"
+			case "called":
+				return "перезвонили"
+			case "done":
+				return "закрыта"
+			case "cancelled":
+				return "отменена"
+			default:
+				return status
+			}
 		},
 		"priceFmt": func(v any) string {
 			switch t := v.(type) {

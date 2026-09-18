@@ -11,12 +11,19 @@
 <body>
   {{template "nav" .}}
   <main>
+    {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
     <div class="page-head">
       <h1>{{.Title}}</h1>
       <p><a href="/admin/site-services">← к списку</a></p>
     </div>
+    {{if .Service.ID}}
     <form class="panel" method="post" action="/admin/site-services/{{.Service.ID}}" style="max-width:720px">
-      <label>Slug</label>
+    {{else}}
+    <form class="panel" method="post" action="/admin/site-services" style="max-width:720px">
+    {{end}}
+      <label class="label-with-tip">Код страницы
+        <span class="tip" tabindex="0" data-tip="Короткий адрес услуги в ссылке, латиницей: например terapevt → /services/terapevt">?</span>
+      </label>
       <input name="slug" required value="{{.Form.slug}}">
       <label>Название</label>
       <input name="title" required value="{{.Form.title}}">
@@ -26,12 +33,10 @@
       <textarea name="body" rows="5">{{.Form.body}}</textarea>
       <label>Цена от (₽)</label>
       <input name="price_from" type="number" value="{{.Form.price_from}}">
-      <label>Ссылка на фото (image_url)</label>
-      <input name="image_url" value="{{.Form.image_url}}" placeholder="https://clinic.example/static/img/... или /static/img/...">
-      <p class="hint" style="margin-top:-.5rem;margin-bottom:1rem;color:var(--muted);font-size:.85rem">
-        Внешняя ссылка — полный https://… Внутренняя — положите файл в <code>static/img/</code> и укажите
-        <code>/static/img/имя.jpg</code> или абсолютный <code>https://ваш-домен/static/img/имя.jpg</code>.
-      </p>
+      <label class="label-with-tip">Фото
+        <span class="tip" tabindex="0" data-tip="Ссылка на картинку: полный https://… или путь /static/img/имя.jpg. Пустое значение — стандартная заглушка.">?</span>
+      </label>
+      <input name="image_url" value="{{.Form.image_url}}">
       {{if .Form.image_url}}<p><img src="{{.Form.image_url}}" alt="" style="max-width:240px;border-radius:10px"></p>{{end}}
       <label>Порядок сортировки</label>
       <input name="sort_order" type="number" value="{{.Form.sort_order}}">

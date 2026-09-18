@@ -35,6 +35,12 @@ if [ "${AUTO_MIGRATE}" = "true" ] || [ "${AUTO_MIGRATE}" = "1" ]; then
     echo "Ensuring public site tables..."
     psql "$MIG_URL" -v ON_ERROR_STOP=1 -f /app/sborka/07_public_site.sql
   fi
+
+  # Staff gender + photo URL (idempotent)
+  if [ -f /app/sborka/08_staff_photo.sql ]; then
+    echo "Ensuring staff photo fields..."
+    psql "$MIG_URL" -v ON_ERROR_STOP=1 -f /app/sborka/08_staff_photo.sql
+  fi
 fi
 
 exec /app/clinic

@@ -17,20 +17,23 @@
     {{if .FlashError}}<div class="flash flash-error">{{.FlashError}}</div>{{end}}
     <h1>Персонал</h1>
     <p><a class="btn" href="/admin/staff/new">Добавить</a></p>
-    <div class="panel">
+    <div class="panel panel-scroll">
       <table>
-        <thead><tr><th>ID</th><th>ФИО</th><th>Тип</th><th>Спец.</th><th>Отделение</th><th>Каб.</th><th></th></tr></thead>
+        <thead><tr><th></th><th>ID</th><th>ФИО</th><th>Пол</th><th>Тип</th><th>Спец.</th><th>Отделение</th><th>Каб.</th><th></th></tr></thead>
         <tbody>
           {{range .StaffList}}
           <tr>
-            <td>{{.ID}}</td><td>{{.FullName}}</td><td>{{.StaffKind}}</td>
+            <td><img class="avatar" src="{{staffAvatar .}}" alt="" width="40" height="40"></td>
+            <td>{{.ID}}</td><td>{{.FullName}}</td>
+            <td>{{if .Gender.Valid}}{{if eq .Gender.String "f"}}ж{{else if eq .Gender.String "m"}}м{{else}}{{.Gender.String}}{{end}}{{else}}—{{end}}</td>
+            <td>{{if eq .StaffKind "doctor"}}врач{{else if eq .StaffKind "nurse"}}медсестра{{else}}{{.StaffKind}}{{end}}</td>
             <td>{{if .Specialty.Valid}}{{.Specialty.String}}{{else}}—{{end}}</td>
             <td>{{.Department}}</td>
             <td>{{if .Office.Valid}}{{.Office.String}}{{else}}—{{end}}</td>
             <td>
               <div class="row-actions">
                 <a href="/admin/staff/{{.ID}}/edit">править</a>
-                <form method="post" action="/admin/staff/{{.ID}}/delete" onsubmit="return confirm('Удалить? Может упасть на FK.')">
+                <form method="post" action="/admin/staff/{{.ID}}/delete" onsubmit="return confirm('Удалить сотрудника?')">
                   <button type="submit" class="link-action danger">удалить</button>
                 </form>
               </div>

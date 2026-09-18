@@ -11,22 +11,19 @@
 <body>
   <div class="login-layout">
     <div class="login-side" style="--login-image:url('/static/img/hero.jpg')">
-      <div class="subdomain" style="width:fit-content;background:rgba(255,255,255,.15);color:#fff">кабинет персонала</div>
       <h1>Кабинет персонала</h1>
-      <p>Вход для u_admin, u_registrar, u_doctor. Публичный сайт — на главной без логина.</p>
     </div>
     <div class="login-box">
       <form class="login-card" method="post" action="/login">
-        <p class="eyebrow">Staff login</p>
+        <p class="eyebrow">Персонал</p>
         <h2>Вход в систему</h2>
-        <p class="hint">Учебные логины: u_admin / u_registrar / u_doctor · пароль ClinicDemo1!</p>
         {{if .FlashError}}<div style="background:#fdecea;border:1px solid #f0c2bc;padding:.75rem;border-radius:8px;margin-bottom:1rem">{{.FlashError}}</div>{{end}}
         <label for="login">Логин</label>
-        <input id="login" name="login" required autocomplete="username" placeholder="u_admin">
+        <input id="login" name="login" required autocomplete="username">
         <label for="password">Пароль</label>
         <input id="password" name="password" type="password" required autocomplete="current-password">
         <button class="btn btn-primary btn-wide" type="submit">Войти</button>
-        <p class="hint" style="margin-top:1rem;margin-bottom:0">Пациентам: <a href="/">открыть публичный сайт</a></p>
+        <p class="hint" style="margin-top:1rem;margin-bottom:0">Пациентам: <a href="/">открыть сайт клиники</a></p>
       </form>
     </div>
   </div>
